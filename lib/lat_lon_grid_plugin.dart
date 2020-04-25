@@ -1,10 +1,11 @@
 library lat_lon_grid_plugin;
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map/plugin_api.dart';
 import 'package:latlong/latlong.dart';
-import 'dart:math';
 
 // MapPluginLatLonGridOptions
 class MapPluginLatLonGridOptions extends LayerOptions {
@@ -25,7 +26,8 @@ class MapPluginLatLonGridOptions extends LayerOptions {
   // prevents label popup effect when sliding in
   bool enableOverscan = true;
 
-  MapPluginLatLonGridOptions({this.lineColor = Colors.black,
+  MapPluginLatLonGridOptions({
+    this.lineColor = Colors.black,
     this.textColor = Colors.white,
     this.lineWidth = 0.5,
     this.textBackgroundColor = Colors.black,
@@ -37,7 +39,8 @@ class MapPluginLatLonGridOptions extends LayerOptions {
     this.placeLabelsOnLines = true,
     this.offsetLonTextBottom = 50,
     this.offsetLatTextLeft = 75,
-    this.enableOverscan = true});
+    this.enableOverscan = true,
+  });
 }
 
 // MapPluginLatLonGrid
@@ -60,8 +63,7 @@ class MapPluginLatLonGrid implements MapPlugin {
       );
     }
 
-    throw Exception('Unknown options type for MyCustom'
-        'plugin: $options');
+    throw Exception('Unknown options type for MyCustom plugin: $options');
   }
 
   @override
@@ -107,8 +109,7 @@ class LatLonPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-
-    if(enableProfiling) {
+    if (enableProfiling) {
       time = DateTime.now().microsecondsSinceEpoch;
     }
 
@@ -132,7 +133,7 @@ class LatLonPainter extends CustomPainter {
     for (int i = 0; i < lonPos.length; i++) {
       // convert point to pixels
       CustomPoint projected =
-      mapState.project(LatLng(north, lonPos[i]), mapState.zoom);
+          mapState.project(LatLng(north, lonPos[i]), mapState.zoom);
       double pixelPos = projected.x - topLeftPixel.x;
 
       // draw line
@@ -140,7 +141,7 @@ class LatLonPainter extends CustomPainter {
       var pBottomSouth = Offset(pixelPos, h);
       canvas.drawLine(pTopNorth, pBottomSouth, mPaint);
 
-      if(options.placeLabels) {
+      if (options.placeLabels) {
         // add to list
         // TODO: not used right now
         lonGridLabels.add(GridLabel(lonPos[i], inc[1].toInt(), pixelPos,
@@ -158,7 +159,7 @@ class LatLonPainter extends CustomPainter {
     for (int i = 0; i < latPos.length; i++) {
       // convert back to pixels
       CustomPoint projected =
-      mapState.project(LatLng(latPos[i], east), mapState.zoom);
+          mapState.project(LatLng(latPos[i], east), mapState.zoom);
       double pixelPos = projected.y - topLeftPixel.y;
 
       // draw line
@@ -166,7 +167,7 @@ class LatLonPainter extends CustomPainter {
       var pRightEast = Offset(w, pixelPos);
       canvas.drawLine(pLeftWest, pRightEast, mPaint);
 
-      if(options.placeLabels) {
+      if (options.placeLabels) {
         // add to list
         // TODO: not used right now
         latGridLabels.add(
@@ -180,17 +181,14 @@ class LatLonPainter extends CustomPainter {
     }
 
     if(enableProfiling) {
-      print("paint() processed in ${DateTime.now().microsecondsSinceEpoch - time} us");
+      print('paint() processed in ${DateTime.now().microsecondsSinceEpoch - time} us');
     }
-
-
   }
 
   // TODO: Refactor using lat/lon grid label variables
   // TODO: this function should get a list of text labels and a list of positions
   void drawText(Canvas canvas, double val, int digits, double posx, double posy,
       bool isLat) {
-
     // add prefix if enabled
     String sAbbr = "";
     if (options.showCardinalDirections) {
@@ -300,14 +298,14 @@ class LatLonPainter extends CustomPainter {
     }
 
     // check for extended range
-    if(extendedRange) {
+    if (extendedRange) {
       // add extra lower entry
-      if(list[0] - inc > lowerBound) {
-        list.insert(0, list[0] - inc) ;
+      if (list[0] - inc > lowerBound) {
+        list.insert(0, list[0] - inc);
       }
       // add extra upper entry
-      if(list.last + inc < upperBound) {
-        list.add(list.last + inc) ;
+      if (list.last + inc < upperBound) {
+        list.add(list.last + inc);
       }
     }
 
