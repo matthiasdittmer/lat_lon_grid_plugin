@@ -23,7 +23,6 @@ class MapPluginLatLonGridOptions extends LayerOptions {
 
   // overscan ensures that label are visible even if line is not already
   // prevents label popup effect when sliding in
-  // TODO: not implemented right now
   bool enableOverscan = true;
 
   MapPluginLatLonGridOptions({this.lineColor = Colors.black,
@@ -281,7 +280,8 @@ class LatLonPainter extends CustomPainter {
   }
 
   // Generate a list of doubles between start and end with spacing inc.
-  List<double> generatePositions(double start, double end, double inc, bool extendedRange, double lowerBound, double upperBound) {
+  List<double> generatePositions(double start, double end, double inc,
+      bool extendedRange, double lowerBound, double upperBound) {
     List<double> list = new List();
 
     // find first long to draw from
