@@ -286,6 +286,7 @@ class LatLonPainter extends CustomPainter {
   }
 
   // roundUp
+  // Taken from here: https://stackoverflow.com/questions/3407012/c-rounding-up-to-the-nearest-multiple-of-a-number
   double roundUp(double number, double fixedBase) {
     if (fixedBase != 0 && number != 0) {
       double sign = number > 0 ? 1 : -1;
