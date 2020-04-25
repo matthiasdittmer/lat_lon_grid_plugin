@@ -34,17 +34,18 @@ Please note: Make sure to place the `MapPluginLatLonGridOptions()` right after `
     ),
     layers: [
       TileLayerOptions(
-          urlTemplate:
-              "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-          subdomains: ['a', 'b', 'c']),
+        urlTemplate:
+            'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        subdomains: ['a', 'b', 'c'],
+      ),
       MapPluginLatLonGridOptions(
-          lineColor: Colors.black,
-          textColor: Colors.white,
-          textBackgroundColor: Colors.black,
-          rotateLonLabels: false,
-          showCardinalDirections: true
-          // plus other parameters ...
-          ),
+        lineColor: Colors.black,
+        textColor: Colors.white,
+        textBackgroundColor: Colors.black,
+        rotateLonLabels: false,
+        showCardinalDirections: true,
+        // plus other parameters ...
+      ),
     ],
   ),
 ```
