@@ -129,14 +129,16 @@ class LatLonPainter extends CustomPainter {
       var pBottomSouth = Offset(pixelPos, h);
       canvas.drawLine(pTopNorth, pBottomSouth, mPaint);
 
-      // add to list
-      // TODO: not used right now
-      lonGridLabels.add(GridLabel(lonPos[i], inc[1].toInt(), pixelPos,
-          h - options.offsetLonTextBottom, false));
+      if(options.placeLabels) {
+        // add to list
+        // TODO: not used right now
+        lonGridLabels.add(GridLabel(lonPos[i], inc[1].toInt(), pixelPos,
+            h - options.offsetLonTextBottom, false));
 
-      // draw markers
-      drawText(canvas, lonPos[i], inc[1].toInt(), pixelPos,
-          h - options.offsetLonTextBottom, false);
+        // draw labels
+        drawText(canvas, lonPos[i], inc[1].toInt(), pixelPos,
+            h - options.offsetLonTextBottom, false);
+      }
     }
 
     // draw west-east lines
@@ -153,15 +155,17 @@ class LatLonPainter extends CustomPainter {
       var pRightEast = Offset(w, pixelPos);
       canvas.drawLine(pLeftWest, pRightEast, mPaint);
 
-      // add to list
-      // TODO: not used right now
-      latGridLabels.add(
-          GridLabel(latPos[i], inc[1].toInt(), options.offsetLatTextLeft,
-              pixelPos, true));
+      if(options.placeLabels) {
+        // add to list
+        // TODO: not used right now
+        latGridLabels.add(
+            GridLabel(latPos[i], inc[1].toInt(), options.offsetLatTextLeft,
+                pixelPos, true));
 
-      // draw markers
-      drawText(canvas, latPos[i], inc[1].toInt(), options.offsetLatTextLeft,
-          pixelPos, true);
+        // draw labels
+        drawText(canvas, latPos[i], inc[1].toInt(), options.offsetLatTextLeft,
+              pixelPos, true);
+      }
     }
   }
 

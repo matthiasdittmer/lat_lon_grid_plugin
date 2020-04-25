@@ -102,6 +102,8 @@ class _HomePageState extends State<HomePage> {
                   lineColor: Colors.black,
                   textColor: Colors.white,
                   textBackgroundColor: Colors.black,
+                  placeLabels: true,
+                  placeLabelsOnLines: true,
                   rotateLonLabels: false,
                   showCardinalDirections: true),
             ],
