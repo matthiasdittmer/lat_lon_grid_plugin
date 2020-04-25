@@ -1,3 +1,5 @@
+[![Pub](https://img.shields.io/pub/v/lat_lon_grid_plugin.svg)](https://pub.dev/packages/lat_lon_grid_plugin)
+
 # lat_lon_grid_plugin
 
 Adds a latitude / longitude grid as plugin to the [flutter_map](https://github.com/johnpryan/flutter_map/).
