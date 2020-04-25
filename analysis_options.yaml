@@ -1,0 +1,9 @@
+analyzer:
+  exclude: [build/**]
+
+linter:
+  rules:
+    - prefer_single_quotes
+
+    - always_specify_types
+    - always_declare_return_types
