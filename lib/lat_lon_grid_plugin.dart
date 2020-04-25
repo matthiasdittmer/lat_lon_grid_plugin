@@ -9,6 +9,7 @@ import 'dart:math';
 // MapPluginLatLonGridOptions
 class MapPluginLatLonGridOptions extends LayerOptions {
   Color lineColor;
+  double lineWidth = 0.5;
   Color textColor;
   Color textBackgroundColor;
   bool showCardinalDirections = false;
@@ -27,6 +28,7 @@ class MapPluginLatLonGridOptions extends LayerOptions {
 
   MapPluginLatLonGridOptions({this.lineColor = Colors.black,
     this.textColor = Colors.white,
+    this.lineWidth = 0.5,
     this.textBackgroundColor = Colors.black,
     this.showCardinalDirections = true,
     this.showCardinalDirectionsAsPrefix = false,
@@ -95,7 +97,7 @@ class LatLonPainter extends CustomPainter {
 
   LatLonPainter({this.options, this.mapState}) {
     mPaint.color = options.lineColor;
-    mPaint.strokeWidth = 0.5;
+    mPaint.strokeWidth = options.lineWidth;
     mPaint.isAntiAlias = true; // default anyway
   }
 

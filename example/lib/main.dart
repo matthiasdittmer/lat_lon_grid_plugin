@@ -101,6 +101,7 @@ class _HomePageState extends State<HomePage> {
                   subdomains: ['a', 'b', 'c']),
               MapPluginLatLonGridOptions(
                   lineColor: Colors.black,
+                  lineWidth: 0.5,
                   textColor: Colors.white,
                   textBackgroundColor: Colors.black,
                   showCardinalDirections: true,
