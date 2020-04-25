@@ -22,7 +22,7 @@ class MapPluginLatLonGridOptions extends LayerOptions {
   double offsetLonTextBottom = 50;
   double offsetLatTextLeft = 75;
 
-  // overscan ensures that label are visible even if line is not already
+  // overscan ensures that labels are visible even if line is not already
   // prevents label popup effect when sliding in
   bool enableOverscan = true;
 
@@ -73,13 +73,13 @@ class MapPluginLatLonGrid implements MapPlugin {
 }
 
 // GridLabel
-// TODO: not used right now
 class GridLabel {
   double val;
   int digits;
   double posx;
   double posy;
   bool isLat;
+  String label;
 
   GridLabel(this.val, this.digits, this.posx, this.posy, this.isLat);
 }
@@ -97,7 +97,7 @@ class LatLonPainter extends CustomPainter {
   bool enableProfiling = false;
   int time = 0;
 
-  // TODO: not used right now
+  // not used right now, left in code
   List<GridLabel> lonGridLabels = List();
   List<GridLabel> latGridLabels = List();
 
@@ -143,9 +143,10 @@ class LatLonPainter extends CustomPainter {
 
       if (options.placeLabels) {
         // add to list
-        // TODO: not used right now
+        /*
         lonGridLabels.add(GridLabel(lonPos[i], inc[1].toInt(), pixelPos,
             h - options.offsetLonTextBottom, false));
+        */
 
         // draw labels
         drawText(canvas, lonPos[i], inc[1].toInt(), pixelPos,
@@ -169,10 +170,11 @@ class LatLonPainter extends CustomPainter {
 
       if (options.placeLabels) {
         // add to list
-        // TODO: not used right now
+        /*
         latGridLabels.add(
             GridLabel(latPos[i], inc[1].toInt(), options.offsetLatTextLeft,
                 pixelPos, true));
+        */
 
         // draw labels
         drawText(canvas, latPos[i], inc[1].toInt(), options.offsetLatTextLeft,
@@ -185,8 +187,14 @@ class LatLonPainter extends CustomPainter {
     }
   }
 
-  // TODO: Refactor using lat/lon grid label variables
-  // TODO: this function should get a list of text labels and a list of positions
+  // function gets a list of GridLabel objects
+  // Not used right now. Could be used to group and reduce canvas draw()
+  // and rotate() calls. Profiling shows no need for that right now.
+  void drawLabels(Canvas canvas, List<GridLabel> list) {
+    // not implemented right now
+  }
+
+  // draw one text label
   void drawText(Canvas canvas, double val, int digits, double posx, double posy,
       bool isLat) {
     // add prefix if enabled
