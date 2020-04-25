@@ -41,7 +41,8 @@ Please note: Make sure to place the `MapPluginLatLonGridOptions()` right after `
           textBackgroundColor: Colors.black,
           rotateLonLabels: false,
           showCardinalDirections: true
-          // plus other parameters ...),
+          // plus other parameters ...
+          ),
     ],
   ),
 ```
