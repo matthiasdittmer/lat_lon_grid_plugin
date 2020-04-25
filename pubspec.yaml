@@ -1,8 +1,8 @@
 name: lat_lon_grid_plugin
-description: A new Flutter package project.
+description: Adds a latitude / longitude grid as plugin to the [flutter_map](https://github.com/johnpryan/flutter_map/).
 version: 0.0.1
-author:
-homepage:
+author: Matthias Dittmer
+homepage: https://github.com/mat8854/lat_lon_grid_plugin
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
