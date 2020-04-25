@@ -39,9 +39,10 @@ class _HomePageState extends State<HomePage> {
   }
 
   _updateLabel() {
-    if(_mapController != null) {
+    if (_mapController != null) {
       String lat = _mapController.center.latitude.toStringAsFixed(3).toString();
-      String lon = _mapController.center.longitude.toStringAsFixed(3).toString();
+      String lon =
+          _mapController.center.longitude.toStringAsFixed(3).toString();
       String zoom = _mapController.zoom.toStringAsFixed(2).toString();
       setState(() {
         _sLatLonZoom = ("lat: $lat lon: $lon\nzoom: $zoom rotation: $_val");
@@ -102,10 +103,13 @@ class _HomePageState extends State<HomePage> {
                   lineColor: Colors.black,
                   textColor: Colors.white,
                   textBackgroundColor: Colors.black,
+                  showCardinalDirections: true,
+                  showCardinalDirectionsAsPrefix: false,
+                  textSize: 12.0,
                   placeLabels: true,
                   placeLabelsOnLines: true,
                   rotateLonLabels: false,
-                  showCardinalDirections: true),
+                  enableOverscan: false),
             ],
           ),
           Padding(
