@@ -89,7 +89,7 @@ class _HomePageState extends State<HomePage> {
             options: MapOptions(
               center: LatLng(37.7, 13.5),
               zoom: 7.0,
-              onPositionChanged: (pos, bool) => _updateLabel(),
+              onPositionChanged: (position, hasGesture) => _updateLabel(),
               plugins: [
                 MapPluginLatLonGrid(),
               ],
