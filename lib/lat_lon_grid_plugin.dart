@@ -128,7 +128,7 @@ class LatLonPainter extends CustomPainter {
     CustomPoint topLeftPixel = b.topLeft;
 
     // draw north-south lines
-    List<double> lonPos = generatePositions(west, east, inc[0]);
+    List<double> lonPos = generatePositions(west, east, inc[0], options.enableOverscan, -180.0, 180.0);
     lonGridLabels.clear();
     for (int i = 0; i < lonPos.length; i++) {
       // convert point to pixels
@@ -154,7 +154,7 @@ class LatLonPainter extends CustomPainter {
     }
 
     // draw west-east lines
-    List<double> latPos = generatePositions(south, north, inc[0]);
+    List<double> latPos = generatePositions(south, north, inc[0], options.enableOverscan, -90.0, 90.0);
     latGridLabels.clear();
     for (int i = 0; i < latPos.length; i++) {
       // convert back to pixels
@@ -281,7 +281,7 @@ class LatLonPainter extends CustomPainter {
   }
 
   // Generate a list of doubles between start and end with spacing inc.
-  List<double> generatePositions(double start, double end, double inc) {
+  List<double> generatePositions(double start, double end, double inc, bool extendedRange, double lowerBound, double upperBound) {
     List<double> list = new List();
 
     // find first long to draw from
@@ -298,6 +298,19 @@ class LatLonPainter extends CustomPainter {
         run = false;
       }
     }
+
+    // check for extended range
+    if(extendedRange) {
+      // add extra lower entry
+      if(list[0] - inc > lowerBound) {
+        list.insert(0, list[0] - inc) ;
+      }
+      // add extra upper entry
+      if(list.last + inc < upperBound) {
+        list.add(list.last + inc) ;
+      }
+    }
+
     return list;
   }
 

@@ -110,7 +110,7 @@ class _HomePageState extends State<HomePage> {
                   placeLabels: true,
                   placeLabelsOnLines: true,
                   rotateLonLabels: false,
-                  enableOverscan: false),
+                  enableOverscan: true),
             ],
           ),
           Padding(
