@@ -330,13 +330,10 @@ class LatLonPainter extends CustomPainter {
     List<double> ret = List();
 
     // add the increment as first list item
-    if (zoom < 0) {
+    if (zoom <= 0) {
       ret.add(45 * mMultiplier);
     } else {
       switch (zoom) {
-        case 0:
-          ret.add(45 * mMultiplier);
-          break;
         case 1:
           ret.add(30 * mMultiplier);
           break;
