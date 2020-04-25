@@ -88,7 +88,7 @@ class LatLonPainter extends CustomPainter {
   double h = 0;
   MapPluginLatLonGridOptions options;
   MapState mapState;
-  final Paint mPaint = new Paint();
+  final Paint mPaint = Paint();
 
   // enable to do basic profiling for draw() function
   // default disabled
@@ -96,8 +96,8 @@ class LatLonPainter extends CustomPainter {
   int time = 0;
 
   // TODO: not used right now
-  List<GridLabel> lonGridLabels = new List();
-  List<GridLabel> latGridLabels = new List();
+  List<GridLabel> lonGridLabels = List();
+  List<GridLabel> latGridLabels = List();
 
   LatLonPainter({this.options, this.mapState}) {
     mPaint.color = options.lineColor;
@@ -109,7 +109,7 @@ class LatLonPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
 
     if(enableProfiling) {
-      time = new DateTime.now().microsecondsSinceEpoch;
+      time = DateTime.now().microsecondsSinceEpoch;
     }
 
     w = size.width;
@@ -180,7 +180,7 @@ class LatLonPainter extends CustomPainter {
     }
 
     if(enableProfiling) {
-      print("paint() processed in ${new DateTime.now().microsecondsSinceEpoch - time} us");
+      print("paint() processed in ${DateTime.now().microsecondsSinceEpoch - time} us");
     }
 
 
@@ -282,7 +282,7 @@ class LatLonPainter extends CustomPainter {
   // Generate a list of doubles between start and end with spacing inc.
   List<double> generatePositions(double start, double end, double inc,
       bool extendedRange, double lowerBound, double upperBound) {
-    List<double> list = new List();
+    List<double> list = List();
 
     // find first long to draw from
     double currentPos = roundUp(start, inc);
@@ -330,7 +330,7 @@ class LatLonPainter extends CustomPainter {
 
   // Proven values taken from osmdroid LatLon function
   List<double> getIncrementor(int zoom) {
-    List<double> ret = new List();
+    List<double> ret = List();
 
     // add the increment as first list item
     if (zoom < 0) {
