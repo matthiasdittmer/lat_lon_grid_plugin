@@ -247,17 +247,6 @@ class LatLonPainter extends CustomPainter {
     TextPainter textPainter =
         TextPainter(text: textSpan, textDirection: TextDirection.ltr)..layout();
 
-    // calc offset to place labels on lines
-    double offsetX = options.placeLabelsOnLines ? textPainter.width / 2 : 0;
-    double offsetY = options.placeLabelsOnLines ? textPainter.height / 2 : 0;
-
-    // reset unwanted offset depending on lat or lon
-    isLat ? offsetX = 0 : offsetY = 0;
-
-    // actual pixel draw positions
-    double x = posx - offsetX;
-    double y = posy - offsetY;
-
     // check for longitude and enabled rotation
     if (!isLat && options.rotateLonLabels) {
       // canvas is rotated around top left corner clock-wise
@@ -265,15 +254,29 @@ class LatLonPainter extends CustomPainter {
       canvas.save();
       canvas.rotate(-90.0 / 180.0 * pi);
 
-      // TODO: get alignment 100% right with textPainter.height and .width
       // calc compensated position and draw
-      double xCompensated = - y - textPainter.height;
-      double yCompensated = x;
+      double xCompensated = - posy - textPainter.height;
+      double yCompensated = posx;
+      if(options.placeLabelsOnLines) {
+        // apply additional offset
+        yCompensated = posx - textPainter.height / 2;
+      }
       textPainter.paint(canvas, Offset(xCompensated, yCompensated));
 
       // restore canvas
       canvas.restore();
     } else {
+      // calc offset to place labels on lines
+      double offsetX = options.placeLabelsOnLines ? textPainter.width / 2 : 0;
+      double offsetY = options.placeLabelsOnLines ? textPainter.height / 2 : 0;
+
+      // reset unwanted offset depending on lat or lon
+      isLat ? offsetX = 0 : offsetY = 0;
+
+      // apply offset
+      double x = posx - offsetX;
+      double y = posy - offsetY;
+
       // draw text
       textPainter.paint(canvas, Offset(x, y));
     }
