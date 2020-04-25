@@ -27,7 +27,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_map: ^0.8.2
+  flutter_map: ^0.9.0
   lat_lon_grid_plugin:
     path: ../
 
