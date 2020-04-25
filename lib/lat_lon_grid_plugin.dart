@@ -137,8 +137,8 @@ class LatLonPainter extends CustomPainter {
       double pixelPos = projected.x - topLeftPixel.x;
 
       // draw line
-      var pTopNorth = Offset(pixelPos, 0);
-      var pBottomSouth = Offset(pixelPos, h);
+      Offset pTopNorth = Offset(pixelPos, 0);
+      Offset pBottomSouth = Offset(pixelPos, h);
       canvas.drawLine(pTopNorth, pBottomSouth, mPaint);
 
       if (options.placeLabels) {
@@ -163,8 +163,8 @@ class LatLonPainter extends CustomPainter {
       double pixelPos = projected.y - topLeftPixel.y;
 
       // draw line
-      var pLeftWest = Offset(0, pixelPos);
-      var pRightEast = Offset(w, pixelPos);
+      Offset pLeftWest = Offset(0, pixelPos);
+      Offset pRightEast = Offset(w, pixelPos);
       canvas.drawLine(pLeftWest, pRightEast, mPaint);
 
       if (options.placeLabels) {
@@ -190,21 +190,21 @@ class LatLonPainter extends CustomPainter {
   void drawText(Canvas canvas, double val, int digits, double posx, double posy,
       bool isLat) {
     // add prefix if enabled
-    String sAbbr = "";
+    String sAbbr = '';
     if (options.showCardinalDirections) {
       if (isLat) {
         if (val > 0) {
-          sAbbr = "N";
+          sAbbr = 'N';
         } else {
           val *= -1;
-          sAbbr = "S";
+          sAbbr = 'S';
         }
       } else {
         if (val > 0) {
-          sAbbr = "E";
+          sAbbr = 'E';
         } else {
           val *= -1;
-          sAbbr = "W";
+          sAbbr = 'W';
         }
       }
     }
@@ -213,7 +213,7 @@ class LatLonPainter extends CustomPainter {
     String sDegree = val.toStringAsFixed(digits).toString();
 
     // build text string
-    String sText = "";
+    String sText = '';
     if (!options.showCardinalDirections) {
       sText = sDegree;
     } else {
@@ -226,19 +226,18 @@ class LatLonPainter extends CustomPainter {
         }
       } else {
         // no leading minus sign before zero
-        sText = "0";
+        sText = '0';
       }
     }
 
     // setup all text painter objects
-    var textStyle = TextStyle(
+    TextStyle textStyle = TextStyle(
         backgroundColor: options.textBackgroundColor,
         color: options.textColor,
         fontSize: options.textSize);
-    var textSpan = TextSpan(style: textStyle, text: sText);
-    var textPainter =
-    TextPainter(text: textSpan, textDirection: TextDirection.ltr)
-      ..layout();
+    TextSpan textSpan = TextSpan(style: textStyle, text: sText);
+    TextPainter textPainter =
+        TextPainter(text: textSpan, textDirection: TextDirection.ltr)..layout();
 
     // calc offset to place labels on lines
     double offsetX = options.placeLabelsOnLines ? textPainter.width / 2 : 0;

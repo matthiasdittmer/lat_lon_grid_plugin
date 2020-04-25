@@ -27,10 +27,10 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   MapController _mapController;
-  String _sLatLonZoom = "unset";
-  var _val = 0;
+  String _sLatLonZoom = 'unset';
+  int _val = 0;
 
-  _updateRotation(double valNew) {
+  void _updateRotation(double valNew) {
     setState(() {
       _val = valNew.toInt();
     });
@@ -38,14 +38,14 @@ class _HomePageState extends State<HomePage> {
     _mapController.rotate(valNew);
   }
 
-  _updateLabel() {
+  void _updateLabel() {
     if (_mapController != null) {
       String lat = _mapController.center.latitude.toStringAsFixed(3).toString();
       String lon =
           _mapController.center.longitude.toStringAsFixed(3).toString();
       String zoom = _mapController.zoom.toStringAsFixed(2).toString();
       setState(() {
-        _sLatLonZoom = ("lat: $lat lon: $lon\nzoom: $zoom rotation: $_val");
+        _sLatLonZoom = ('lat: $lat lon: $lon\nzoom: $zoom rotation: $_val');
       });
     }
   }
@@ -97,7 +97,7 @@ class _HomePageState extends State<HomePage> {
             layers: [
               TileLayerOptions(
                 urlTemplate:
-                    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
                 subdomains: ['a', 'b', 'c'],
               ),
               MapPluginLatLonGridOptions(
