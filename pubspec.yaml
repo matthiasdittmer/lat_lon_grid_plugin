@@ -5,12 +5,12 @@ homepage: https://github.com/mat8854/
 repository: https://github.com/mat8854/lat_lon_grid_plugin
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: '>=2.1.0 <3.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
-  flutter_map: ^0.8.2
+  flutter_map: '>=0.8.2 <0.10.0'
   latlong: ^0.6.1
 
 dev_dependencies:
