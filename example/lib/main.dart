@@ -110,7 +110,7 @@ class _HomePageState extends State<HomePage> {
                 textSize: 12.0,
                 placeLabels: true,
                 placeLabelsOnLines: true,
-                rotateLonLabels: false,
+                rotateLonLabels: true,
                 enableOverscan: true,
               ),
             ],
