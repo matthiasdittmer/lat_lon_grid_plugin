@@ -91,6 +91,11 @@ class LatLonPainter extends CustomPainter {
   MapState mapState;
   final Paint mPaint = new Paint();
 
+  // enable to do basic profiling for draw() function
+  // default disabled
+  bool enableProfiling = false;
+  int time = 0;
+
   // TODO: not used right now
   List<GridLabel> lonGridLabels = new List();
   List<GridLabel> latGridLabels = new List();
@@ -103,6 +108,11 @@ class LatLonPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
+
+    if(enableProfiling) {
+      time = new DateTime.now().microsecondsSinceEpoch;
+    }
+
     w = size.width;
     h = size.height;
 
@@ -169,6 +179,12 @@ class LatLonPainter extends CustomPainter {
               pixelPos, true);
       }
     }
+
+    if(enableProfiling) {
+      print("paint() processed in ${new DateTime.now().microsecondsSinceEpoch - time} us");
+    }
+
+
   }
 
   // TODO: Refactor using lat/lon grid label variables
