@@ -5,5 +5,5 @@ linter:
   rules:
     - prefer_single_quotes
 
-    - always_specify_types
     - always_declare_return_types
+    - type_annotate_public_apis
