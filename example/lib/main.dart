@@ -40,10 +40,9 @@ class _HomePageState extends State<HomePage> {
 
   void _updateLabel() {
     if (_mapController != null) {
-      String lat = _mapController.center.latitude.toStringAsFixed(3).toString();
-      String lon =
-          _mapController.center.longitude.toStringAsFixed(3).toString();
-      String zoom = _mapController.zoom.toStringAsFixed(2).toString();
+      String lat = _mapController.center.latitude.toStringAsFixed(3);
+      String lon = _mapController.center.longitude.toStringAsFixed(3);
+      String zoom = _mapController.zoom.toStringAsFixed(2);
       _sLatLonZoom = ('lat: $lat lon: $lon\nzoom: $zoom rotation: $_val');
     }
   }
