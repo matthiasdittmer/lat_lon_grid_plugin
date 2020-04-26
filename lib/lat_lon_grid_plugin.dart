@@ -215,10 +215,10 @@ class LatLonPainter extends CustomPainter {
       // calc median here, not using mean here
       // use "effective integer division" as suggested from IDE
       options.profilingVals.sort();
-      int mean = options.profilingVals[(MapPluginLatLonGridOptions.SAMPLES - 1) ~/ 2];
+      int median = options.profilingVals[(MapPluginLatLonGridOptions.SAMPLES - 1) ~/ 2];
 
       // print median once to console
-      print('median of draw() is ${mean} us (out of ${MapPluginLatLonGridOptions.SAMPLES} samples)');
+      print('median of draw() is ${median} us (out of ${MapPluginLatLonGridOptions.SAMPLES} samples)');
       // reset counter
       options.profilingValCount = 0;
     }
