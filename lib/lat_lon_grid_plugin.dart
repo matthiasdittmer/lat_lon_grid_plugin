@@ -99,7 +99,6 @@ class GridLabel {
 }
 
 class LatLonPainter extends CustomPainter {
-  double mMultiplier = 1.0;
   double w = 0;
   double h = 0;
   MapPluginLatLonGridOptions options;
@@ -359,74 +358,74 @@ class LatLonPainter extends CustomPainter {
 
     // add the increment as first list item
     if (zoom <= 0) {
-      ret.add(45 * mMultiplier);
+      ret.add(45);
     } else {
       switch (zoom) {
         case 1:
-          ret.add(30 * mMultiplier);
+          ret.add(30);
           break;
         case 2:
-          ret.add(15 * mMultiplier);
+          ret.add(15);
           break;
         case 3:
-          ret.add(9 * mMultiplier);
+          ret.add(9);
           break;
         case 4:
-          ret.add(6 * mMultiplier);
+          ret.add(6);
           break;
         case 5:
-          ret.add(3 * mMultiplier);
+          ret.add(3);
           break;
         case 6:
-          ret.add(2 * mMultiplier);
+          ret.add(2);
           break;
         case 7:
-          ret.add(1 * mMultiplier);
+          ret.add(1);
           break;
         case 8:
-          ret.add(0.5 * mMultiplier);
+          ret.add(0.5);
           break;
         case 9:
-          ret.add(0.25 * mMultiplier);
+          ret.add(0.25);
           break;
         case 10:
-          ret.add(0.1 * mMultiplier);
+          ret.add(0.1);
           break;
         case 11:
-          ret.add(0.05 * mMultiplier);
+          ret.add(0.05);
           break;
         case 12:
-          ret.add(0.025 * mMultiplier);
+          ret.add(0.025);
           break;
         case 13:
-          ret.add(0.0125 * mMultiplier);
+          ret.add(0.0125);
           break;
         case 14:
-          ret.add(0.00625 * mMultiplier);
+          ret.add(0.00625);
           break;
         case 15:
-          ret.add(0.003125 * mMultiplier);
+          ret.add(0.003125);
           break;
         case 16:
-          ret.add(0.0015625 * mMultiplier);
+          ret.add(0.0015625);
           break;
         case 17:
-          ret.add(0.00078125 * mMultiplier);
+          ret.add(0.00078125);
           break;
         case 18:
-          ret.add(0.000390625 * mMultiplier);
+          ret.add(0.000390625);
           break;
         case 19:
-          ret.add(0.0001953125 * mMultiplier);
+          ret.add(0.0001953125);
           break;
         case 20:
-          ret.add(0.00009765625 * mMultiplier);
+          ret.add(0.00009765625);
           break;
         case 21:
-          ret.add(0.000048828125 * mMultiplier);
+          ret.add(0.000048828125);
           break;
         default:
-          ret.add(0.0000244140625 * mMultiplier);
+          ret.add(0.0000244140625);
           break;
       }
     }
