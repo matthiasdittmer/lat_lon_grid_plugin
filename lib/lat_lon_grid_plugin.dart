@@ -301,17 +301,20 @@ class LatLonPainter extends CustomPainter {
     return false;
   }
 
-  // Generate a list of doubles between start and end with spacing inc.
+  // Generate a list of doubles between start and end with spacing inc
   List<double> generatePositions(double start, double end, double inc,
       bool extendedRange, double lowerBound, double upperBound) {
     List<double> list = List();
 
-    // find first long to draw from
+    // find first value
     double currentPos = roundUp(start, inc);
     list.add(currentPos);
 
-    // TODO: bad coding style, no explicit exit condition
-    // tested on extreme zoom levels and rotation, working
+    // bad coding style, use with caution
+    // added assert statements for basic sanity check
+    // does still not guarantee termination for edge case values from inc
+    assert(inc > 0);
+    assert(start < end);
     bool run = true;
     while (run) {
       currentPos += inc;
