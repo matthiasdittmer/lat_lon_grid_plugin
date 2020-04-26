@@ -33,20 +33,17 @@ class _HomePageState extends State<HomePage> {
   void _updateRotation(double valNew) {
     setState(() {
       _val = valNew.toInt();
+      _updateLabel();
     });
-    _updateLabel();
     _mapController.rotate(valNew);
   }
 
   void _updateLabel() {
     if (_mapController != null) {
-      String lat = _mapController.center.latitude.toStringAsFixed(3).toString();
-      String lon =
-          _mapController.center.longitude.toStringAsFixed(3).toString();
-      String zoom = _mapController.zoom.toStringAsFixed(2).toString();
-      setState(() {
-        _sLatLonZoom = ('lat: $lat lon: $lon\nzoom: $zoom rotation: $_val');
-      });
+      String lat = _mapController.center.latitude.toStringAsFixed(3);
+      String lon = _mapController.center.longitude.toStringAsFixed(3);
+      String zoom = _mapController.zoom.toStringAsFixed(2);
+      _sLatLonZoom = ('lat: $lat lon: $lon\nzoom: $zoom rotation: $_val');
     }
   }
 
@@ -124,19 +121,15 @@ class _HomePageState extends State<HomePage> {
                 width: 200,
                 child: Container(
                   color: Colors.blue,
-                  child: Column(
-                    children: <Widget>[
-                      Slider(
-                        activeColor: Colors.white,
-                        inactiveColor: Colors.grey,
-                        value: _val.toDouble(),
-                        min: 0.0,
-                        max: 360.0,
-                        divisions: 360,
-                        onChanged: (double valNew) => _updateRotation(valNew),
-                        label: '$_val',
-                      ),
-                    ],
+                  child: Slider(
+                    activeColor: Colors.white,
+                    inactiveColor: Colors.grey,
+                    value: _val.toDouble(),
+                    min: 0.0,
+                    max: 360.0,
+                    divisions: 360,
+                    onChanged: (double valNew) => _updateRotation(valNew),
+                    label: '$_val',
                   ),
                 ),
               ),
