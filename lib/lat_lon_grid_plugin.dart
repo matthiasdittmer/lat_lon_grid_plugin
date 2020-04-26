@@ -356,79 +356,22 @@ class LatLonPainter extends CustomPainter {
   List<double> getIncrementor(int zoom) {
     List<double> ret = List();
 
-    // add the increment as first list item
-    if (zoom <= 0) {
-      ret.add(45);
-    } else {
-      switch (zoom) {
-        case 1:
-          ret.add(30);
-          break;
-        case 2:
-          ret.add(15);
-          break;
-        case 3:
-          ret.add(9);
-          break;
-        case 4:
-          ret.add(6);
-          break;
-        case 5:
-          ret.add(3);
-          break;
-        case 6:
-          ret.add(2);
-          break;
-        case 7:
-          ret.add(1);
-          break;
-        case 8:
-          ret.add(0.5);
-          break;
-        case 9:
-          ret.add(0.25);
-          break;
-        case 10:
-          ret.add(0.1);
-          break;
-        case 11:
-          ret.add(0.05);
-          break;
-        case 12:
-          ret.add(0.025);
-          break;
-        case 13:
-          ret.add(0.0125);
-          break;
-        case 14:
-          ret.add(0.00625);
-          break;
-        case 15:
-          ret.add(0.003125);
-          break;
-        case 16:
-          ret.add(0.0015625);
-          break;
-        case 17:
-          ret.add(0.00078125);
-          break;
-        case 18:
-          ret.add(0.000390625);
-          break;
-        case 19:
-          ret.add(0.0001953125);
-          break;
-        case 20:
-          ret.add(0.00009765625);
-          break;
-        case 21:
-          ret.add(0.000048828125);
-          break;
-        default:
-          ret.add(0.0000244140625);
-          break;
-      }
+    List<double> lineSpacingDegrees =
+      [45, 30, 15, 9, 6, 3, 2, 1, 0.5, 0.25,
+        0.1, 0.05, 0.025, 0.0125, 0.00625, 0.003125, 0.0015625, 0.00078125,
+        0.000390625, 0.0001953125, 0.00009765625, 0.000048828125,
+        0.0000244140625];
+
+    // limit index
+    int index = zoom;
+    if(zoom <= 0) {
+      index = 0;
     }
+    if(zoom > lineSpacingDegrees.length - 1) {
+      index = lineSpacingDegrees.length - 1;
+    }
+    // pick the right spacing
+    ret.add(lineSpacingDegrees[index]);
 
     // add decimal precision as second list value
     // hard coded from hand
