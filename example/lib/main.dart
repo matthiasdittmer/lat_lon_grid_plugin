@@ -33,8 +33,8 @@ class _HomePageState extends State<HomePage> {
   void _updateRotation(double valNew) {
     setState(() {
       _val = valNew.toInt();
+      _updateLabel();
     });
-    _updateLabel();
     _mapController.rotate(valNew);
   }
 
@@ -44,9 +44,7 @@ class _HomePageState extends State<HomePage> {
       String lon =
           _mapController.center.longitude.toStringAsFixed(3).toString();
       String zoom = _mapController.zoom.toStringAsFixed(2).toString();
-      setState(() {
-        _sLatLonZoom = ('lat: $lat lon: $lon\nzoom: $zoom rotation: $_val');
-      });
+      _sLatLonZoom = ('lat: $lat lon: $lon\nzoom: $zoom rotation: $_val');
     }
   }
 
