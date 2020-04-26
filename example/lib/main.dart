@@ -108,7 +108,7 @@ class _HomePageState extends State<HomePage> {
                 showCardinalDirections: true,
                 showCardinalDirectionsAsPrefix: false,
                 textSize: 12.0,
-                placeLabels: true,
+                showLabels: true,
                 placeLabelsOnLines: true,
                 rotateLonLabels: true,
                 enableOverscan: true,

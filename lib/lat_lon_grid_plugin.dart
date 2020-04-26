@@ -9,19 +9,33 @@ import 'package:latlong/latlong.dart';
 
 // MapPluginLatLonGridOptions
 class MapPluginLatLonGridOptions extends LayerOptions {
+  // color of grid lines
   Color lineColor;
+  // width of grid lines
+  // can be adjusted even down to 0.1 on high res displays for a light grid
   double lineWidth = 0.5;
+  // color of grid labels
   Color textColor;
+  // background color of labels
   Color textBackgroundColor;
+  // show cardinal directions instead of numbers only
+  // prevents negative numbers, e.g. 45.5W instead of -45.5
   bool showCardinalDirections = false;
+  // show cardinal direction as prefix, e.g. W45.5 instead of 45.5W
   bool showCardinalDirectionsAsPrefix = false;
+  // text size for labels
   double textSize = 12.0;
-  bool placeLabels = true;
+  // enable labels
+  bool showLabels = true;
+  // rotate longitude labels 90 degrees
+  // mainly to prevent overlapping on high zoom levels
   bool rotateLonLabels = true;
+  // center labels on lines instead of top edge alignment
   bool placeLabelsOnLines = true;
+  // offset for longitude labels from the 'bottom' (north up)
   double offsetLonTextBottom = 50;
+  // offset for latitude labels from the 'left' (north up)
   double offsetLatTextLeft = 75;
-
   // overscan ensures that labels are visible even if line is not already
   // prevents label popup effect when sliding in
   bool enableOverscan = true;
@@ -34,7 +48,7 @@ class MapPluginLatLonGridOptions extends LayerOptions {
     this.showCardinalDirections = true,
     this.showCardinalDirectionsAsPrefix = false,
     this.textSize = 12.0,
-    this.placeLabels = true,
+    this.showLabels = true,
     this.rotateLonLabels = true,
     this.placeLabelsOnLines = true,
     this.offsetLonTextBottom = 50,
@@ -141,7 +155,7 @@ class LatLonPainter extends CustomPainter {
       Offset pBottomSouth = Offset(pixelPos, h);
       canvas.drawLine(pTopNorth, pBottomSouth, mPaint);
 
-      if (options.placeLabels) {
+      if (options.showLabels) {
         // add to list
         /*
         lonGridLabels.add(GridLabel(lonPos[i], inc[1].toInt(), pixelPos,
@@ -168,7 +182,7 @@ class LatLonPainter extends CustomPainter {
       Offset pRightEast = Offset(w, pixelPos);
       canvas.drawLine(pLeftWest, pRightEast, mPaint);
 
-      if (options.placeLabels) {
+      if (options.showLabels) {
         // add to list
         /*
         latGridLabels.add(
