@@ -124,19 +124,15 @@ class _HomePageState extends State<HomePage> {
                 width: 200,
                 child: Container(
                   color: Colors.blue,
-                  child: Column(
-                    children: <Widget>[
-                      Slider(
-                        activeColor: Colors.white,
-                        inactiveColor: Colors.grey,
-                        value: _val.toDouble(),
-                        min: 0.0,
-                        max: 360.0,
-                        divisions: 360,
-                        onChanged: (double valNew) => _updateRotation(valNew),
-                        label: '$_val',
-                      ),
-                    ],
+                  child: Slider(
+                    activeColor: Colors.white,
+                    inactiveColor: Colors.grey,
+                    value: _val.toDouble(),
+                    min: 0.0,
+                    max: 360.0,
+                    divisions: 360,
+                    onChanged: (double valNew) => _updateRotation(valNew),
+                    label: '$_val',
                   ),
                 ),
               ),
