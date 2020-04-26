@@ -43,7 +43,9 @@ class _HomePageState extends State<HomePage> {
       String lat = _mapController.center.latitude.toStringAsFixed(3);
       String lon = _mapController.center.longitude.toStringAsFixed(3);
       String zoom = _mapController.zoom.toStringAsFixed(2);
-      _sLatLonZoom = ('lat: $lat lon: $lon\nzoom: $zoom rotation: $_val');
+      setState(() {
+        _sLatLonZoom = ('lat: $lat lon: $lon\nzoom: $zoom rotation: $_val');
+      });
     }
   }
 
