@@ -55,6 +55,14 @@ class MapPluginLatLonGridOptions extends LayerOptions {
     this.offsetLatTextLeft = 75,
     this.enableOverscan = true,
   });
+
+  // enable to do basic profiling for draw() function
+  // default disabled
+  bool enableProfiling = false;
+  int time = 0;
+  static int SAMPLES = 100;
+  List<int> profilingVals = List(SAMPLES);
+  int profilingValCount = 0;
 }
 
 // MapPluginLatLonGrid
@@ -105,11 +113,6 @@ class LatLonPainter extends CustomPainter {
   MapState mapState;
   final Paint mPaint = Paint();
 
-  // enable to do basic profiling for draw() function
-  // default disabled
-  bool enableProfiling = false;
-  int time = 0;
-
   // not used right now, left in code
   List<GridLabel> lonGridLabels = List();
   List<GridLabel> latGridLabels = List();
@@ -122,8 +125,8 @@ class LatLonPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    if (enableProfiling) {
-      time = DateTime.now().microsecondsSinceEpoch;
+    if (options.enableProfiling) {
+      options.time = DateTime.now().microsecondsSinceEpoch;
     }
 
     w = size.width;
@@ -195,8 +198,29 @@ class LatLonPainter extends CustomPainter {
       }
     }
 
-    if(enableProfiling) {
-      print('paint() processed in ${DateTime.now().microsecondsSinceEpoch - time} us');
+    if(options.enableProfiling) {
+      addValForProfiling(DateTime.now().microsecondsSinceEpoch - options.time);
+    }
+  }
+
+  // add a value to the profiling array
+  // search the console for the final results printed after sample count is collected
+  void addValForProfiling(int val) {
+    // do add / calc logic
+    if(options.profilingValCount < MapPluginLatLonGridOptions.SAMPLES) {
+      // add val
+      options.profilingVals[options.profilingValCount] = val;
+      options.profilingValCount++;
+    } else {
+      // calc median here, not using mean here
+      // use "effective integer division" as suggested from IDE
+      options.profilingVals.sort();
+      int mean = options.profilingVals[(MapPluginLatLonGridOptions.SAMPLES - 1) ~/ 2];
+
+      // print median once to console
+      print('median of draw() is ${mean} us (out of ${MapPluginLatLonGridOptions.SAMPLES} samples)');
+      // reset counter
+      options.profilingValCount = 0;
     }
   }
 
