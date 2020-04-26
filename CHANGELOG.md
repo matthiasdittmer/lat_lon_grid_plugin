@@ -1,3 +1,8 @@
+## [0.0.4] - 2020/04/26
+
+* Added more comments as documentation.
+* Code clean up.
+
 ## [0.0.3] - 2020/04/26
 
 * Upgrading dependencies.
