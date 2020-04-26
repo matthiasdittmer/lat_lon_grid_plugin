@@ -69,7 +69,7 @@ class _HomePageState extends State<HomePage> {
         actions: <Widget>[
           SizedBox(
             height: 50.0,
-            width: 250,
+            width: 250.0,
             child: Container(
               height: 80.0,
               color: Colors.blue,
@@ -123,8 +123,8 @@ class _HomePageState extends State<HomePage> {
             child: Align(
               alignment: Alignment.topRight,
               child: SizedBox(
-                height: 50,
-                width: 200,
+                height: 50.0,
+                width: 200.0,
                 child: Container(
                   color: Colors.blue,
                   child: Slider(
