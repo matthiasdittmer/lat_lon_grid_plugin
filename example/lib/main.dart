@@ -47,7 +47,7 @@ class _HomePageState extends State<HomePage> {
       String lon = _mapController.center.longitude.toStringAsFixed(3);
       String zoom = _mapController.zoom.toStringAsFixed(2);
       setState(() {
-        _sLatLonZoom = ('lat: $lat lon: $lon\nzoom: $zoom rotation: $_val');
+        _sLatLonZoom = 'lat: $lat lon: $lon\nzoom: $zoom rotation: $_val';
       });
     }
   }
@@ -127,15 +127,22 @@ class _HomePageState extends State<HomePage> {
                 width: 200.0,
                 child: Container(
                   color: Colors.blue,
-                  child: Slider(
-                    activeColor: Colors.white,
-                    inactiveColor: Colors.grey,
-                    value: _val.toDouble(),
-                    min: 0.0,
-                    max: 360.0,
-                    divisions: 360,
-                    onChanged: _updateRotation,
-                    label: '$_val',
+                  child: SliderTheme(
+                    data: SliderTheme.of(context).copyWith(
+                      valueIndicatorTextStyle: TextStyle(
+                        color: Colors.black,
+                      ),
+                    ),
+                    child: Slider(
+                      activeColor: Colors.white,
+                      inactiveColor: Colors.grey,
+                      value: _val.toDouble(),
+                      min: 0.0,
+                      max: 360.0,
+                      divisions: 360,
+                      onChanged: _updateRotation,
+                      label: '$_val',
+                    ),
                   ),
                 ),
               ),
