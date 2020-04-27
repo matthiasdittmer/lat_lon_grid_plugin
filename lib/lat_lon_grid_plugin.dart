@@ -253,6 +253,7 @@ class LatLonPainter extends CustomPainter {
     if (!isLat && options.rotateLonLabels) {
       // canvas is rotated around top left corner clock-wise
       // no other API call available
+      // canvas.translate() is used for that use case, still keeping old code
       canvas.save();
       canvas.rotate(-90.0 / 180.0 * pi);
 
