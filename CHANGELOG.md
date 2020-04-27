@@ -1,3 +1,10 @@
+## [0.1.0] - 2020/04/27
+
+* Version bump.
+* Feature stable.
+* Issues in sample application solved.
+* Clean up done.
+
 ## [0.0.6] - 2020/04/27
 
 * Clean up.
