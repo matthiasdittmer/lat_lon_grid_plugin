@@ -143,6 +143,10 @@ class LatLonPainter extends CustomPainter {
     Bounds b = mapState.getPixelBounds(mapState.zoom);
     CustomPoint topLeftPixel = b.topLeft;
 
+    // getting the dimensions for a maximal sized text label
+    TextPainter textPainterMax = getTextPaint("180W");
+    double textPainterMaxDim = textPainterMax.height;
+
     // draw north-south lines
     List<double> lonPos = generatePositions(west, east, inc[0], options.enableOverscan, -180.0, 180.0);
     lonGridLabels.clear();
@@ -155,18 +159,21 @@ class LatLonPainter extends CustomPainter {
       // draw line
       Offset pTopNorth = Offset(pixelPos, 0);
       Offset pBottomSouth = Offset(pixelPos, h);
-      canvas.drawLine(pTopNorth, pBottomSouth, mPaint);
+      if(pixelPos + textPainterMaxDim >= 0 &&
+         pixelPos - textPainterMaxDim <= w) {
+        canvas.drawLine(pTopNorth, pBottomSouth, mPaint);
 
-      if (options.showLabels) {
-        // add to list
-        /*
+        if (options.showLabels) {
+          // add to list
+          /*
         lonGridLabels.add(GridLabel(lonPos[i], inc[1].toInt(), pixelPos,
             h - options.offsetLonTextBottom, false));
         */
 
-        // draw labels
-        drawText(canvas, lonPos[i], inc[1].toInt(), pixelPos,
-            h - options.offsetLonTextBottom, false);
+          // draw labels
+          drawText(canvas, lonPos[i], inc[1].toInt(), pixelPos,
+              h - options.offsetLonTextBottom, false);
+        }
       }
     }
 
@@ -182,19 +189,22 @@ class LatLonPainter extends CustomPainter {
       // draw line
       Offset pLeftWest = Offset(0, pixelPos);
       Offset pRightEast = Offset(w, pixelPos);
-      canvas.drawLine(pLeftWest, pRightEast, mPaint);
+      if(pixelPos - textPainterMaxDim <= h &&
+         pixelPos + textPainterMaxDim >= 0) {
+        canvas.drawLine(pLeftWest, pRightEast, mPaint);
 
-      if (options.showLabels) {
-        // add to list
-        /*
+        if (options.showLabels) {
+          // add to list
+          /*
         latGridLabels.add(
             GridLabel(latPos[i], inc[1].toInt(), options.offsetLatTextLeft,
                 pixelPos, true));
         */
 
-        // draw labels
-        drawText(canvas, latPos[i], inc[1].toInt(), options.offsetLatTextLeft,
+          // draw labels
+          drawText(canvas, latPos[i], inc[1].toInt(), options.offsetLatTextLeft,
               pixelPos, true);
+        }
       }
     }
 
