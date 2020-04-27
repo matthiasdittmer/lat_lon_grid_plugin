@@ -234,6 +234,47 @@ class LatLonPainter extends CustomPainter {
   // draw one text label
   void drawText(Canvas canvas, double val, int digits, double posx, double posy,
       bool isLat) {
+
+    // generate textPainter object from input data
+    String sText = getText(val, digits, isLat);
+    TextPainter textPainter = getTextPaint(sText);
+
+    // check for longitude and enabled rotation
+    if (!isLat && options.rotateLonLabels) {
+      // canvas is rotated around top left corner clock-wise
+      // no other API call available
+      canvas.save();
+      canvas.rotate(-90.0 / 180.0 * pi);
+
+      // calc compensated position and draw
+      double xCompensated = - posy - textPainter.height;
+      double yCompensated = posx;
+      if(options.placeLabelsOnLines) {
+        // apply additional offset
+        yCompensated = posx - textPainter.height / 2;
+      }
+      textPainter.paint(canvas, Offset(xCompensated, yCompensated));
+
+      // restore canvas
+      canvas.restore();
+    } else {
+      // calc offset to place labels on lines
+      double offsetX = options.placeLabelsOnLines ? textPainter.width / 2 : 0;
+      double offsetY = options.placeLabelsOnLines ? textPainter.height / 2 : 0;
+
+      // reset unwanted offset depending on lat or lon
+      isLat ? offsetX = 0 : offsetY = 0;
+
+      // apply offset
+      double x = posx - offsetX;
+      double y = posy - offsetY;
+
+      // draw text
+      textPainter.paint(canvas, Offset(x, y));
+    }
+  }
+
+  String getText(double val, int digits, bool isLat) {
     // add prefix if enabled
     String sAbbr = '';
     if (options.showCardinalDirections) {
@@ -275,48 +316,17 @@ class LatLonPainter extends CustomPainter {
       }
     }
 
+    return sText;
+  }
+
+  TextPainter getTextPaint(String text) {
     // setup all text painter objects
     TextStyle textStyle = TextStyle(
         backgroundColor: options.textBackgroundColor,
         color: options.textColor,
         fontSize: options.textSize);
-    TextSpan textSpan = TextSpan(style: textStyle, text: sText);
-    TextPainter textPainter =
-        TextPainter(text: textSpan, textDirection: TextDirection.ltr)..layout();
-
-    // check for longitude and enabled rotation
-    if (!isLat && options.rotateLonLabels) {
-      // canvas is rotated around top left corner clock-wise
-      // no other API call available
-      canvas.save();
-      canvas.rotate(-90.0 / 180.0 * pi);
-
-      // calc compensated position and draw
-      double xCompensated = - posy - textPainter.height;
-      double yCompensated = posx;
-      if(options.placeLabelsOnLines) {
-        // apply additional offset
-        yCompensated = posx - textPainter.height / 2;
-      }
-      textPainter.paint(canvas, Offset(xCompensated, yCompensated));
-
-      // restore canvas
-      canvas.restore();
-    } else {
-      // calc offset to place labels on lines
-      double offsetX = options.placeLabelsOnLines ? textPainter.width / 2 : 0;
-      double offsetY = options.placeLabelsOnLines ? textPainter.height / 2 : 0;
-
-      // reset unwanted offset depending on lat or lon
-      isLat ? offsetX = 0 : offsetY = 0;
-
-      // apply offset
-      double x = posx - offsetX;
-      double y = posy - offsetY;
-
-      // draw text
-      textPainter.paint(canvas, Offset(x, y));
-    }
+    TextSpan textSpan = TextSpan(style: textStyle, text: text);
+    return TextPainter(text: textSpan, textDirection: TextDirection.ltr)..layout();
   }
 
   @override
