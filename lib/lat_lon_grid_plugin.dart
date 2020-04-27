@@ -166,9 +166,14 @@ class LatLonPainter extends CustomPainter {
       // draw line
       Offset pTopNorth = Offset(pixelPos, 0);
       Offset pBottomSouth = Offset(pixelPos, h);
+      // only draw visible lines, using one complete line width as buffer
+      if(pixelPos + options.lineWidth >= 0 &&
+         pixelPos - options.lineWidth <= w) {
+        canvas.drawLine(pTopNorth, pBottomSouth, mPaint);
+      }
+      // label logic
       if(pixelPos + textPainterMaxDim >= 0 &&
          pixelPos - textPainterMaxDim <= w) {
-        canvas.drawLine(pTopNorth, pBottomSouth, mPaint);
 
         if (options.showLabels) {
           if (options.groupedLabelCalls) {
@@ -196,9 +201,14 @@ class LatLonPainter extends CustomPainter {
       // draw line
       Offset pLeftWest = Offset(0, pixelPos);
       Offset pRightEast = Offset(w, pixelPos);
+      // only draw visible lines, using one complete line width as buffer
+      if(pixelPos + options.lineWidth >= 0 &&
+          pixelPos - options.lineWidth <= h) {
+        canvas.drawLine(pLeftWest, pRightEast, mPaint);
+      }
+      // label logic
       if(pixelPos - textPainterMaxDim <= h &&
          pixelPos + textPainterMaxDim >= 0) {
-        canvas.drawLine(pLeftWest, pRightEast, mPaint);
 
         if (options.showLabels) {
           if(options.groupedLabelCalls) {
