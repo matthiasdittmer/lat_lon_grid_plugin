@@ -19,8 +19,9 @@ class MyApp extends StatelessWidget {
   }
 }
 
-/// HomePage
+/// HomePage which shows the use of the plugin
 class HomePage extends StatefulWidget {
+  /// constructor for the HomePage widget
   HomePage({Key key}) : super(key: key);
 
   @override
@@ -51,6 +52,7 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  @override
   void initState() {
     super.initState();
     _mapController = MapController();
@@ -132,7 +134,7 @@ class _HomePageState extends State<HomePage> {
                     min: 0.0,
                     max: 360.0,
                     divisions: 360,
-                    onChanged: (double valNew) => _updateRotation(valNew),
+                    onChanged: _updateRotation,
                     label: '$_val',
                   ),
                 ),

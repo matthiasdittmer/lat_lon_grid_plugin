@@ -59,17 +59,17 @@ class MapPluginLatLonGridOptions extends LayerOptions {
 
   /// enable to do basic profiling for draw() function
   /// default disabled
-  bool _enableProfiling = false;
+  final bool _enableProfiling = false;
   int _time = 0;
-  static int _SAMPLES = 100;
-  List<int> _profilingVals = List(_SAMPLES);
+  static const int _samples = 100;
+  final List<int> _profilingVals = List(_samples);
   int _profilingValCount = 0;
 
   /// flag to enable grouped label calls
   /// saves performance for rotated lon labels because canvas will be only
   /// rotated back and forth once
   /// default true (enabled)
-  bool _groupedLabelCalls = true;
+  final bool _groupedLabelCalls = true;
 }
 
 /// MapPluginLatLonGrid
@@ -124,8 +124,8 @@ class _LatLonPainter extends CustomPainter {
   final Paint mPaint = Paint();
 
   // not used right now, left in code
-  List<_GridLabel> lonGridLabels = List();
-  List<_GridLabel> latGridLabels = List();
+  List<_GridLabel> lonGridLabels = [];
+  List<_GridLabel> latGridLabels = [];
 
   _LatLonPainter({this.options, this.mapState}) {
     mPaint.color = options.lineColor;
@@ -243,7 +243,7 @@ class _LatLonPainter extends CustomPainter {
   // search the console for the final results printed after sample count is collected
   void addValForProfiling(int val) {
     // do add / calc logic
-    if(options._profilingValCount < MapPluginLatLonGridOptions._SAMPLES) {
+    if(options._profilingValCount < MapPluginLatLonGridOptions._samples) {
       // add val
       options._profilingVals[options._profilingValCount] = val;
       options._profilingValCount++;
@@ -251,10 +251,10 @@ class _LatLonPainter extends CustomPainter {
       // calc median here, not using mean here
       // use "effective integer division" as suggested from IDE
       options._profilingVals.sort();
-      int median = options._profilingVals[(MapPluginLatLonGridOptions._SAMPLES - 1) ~/ 2];
+      int median = options._profilingVals[(MapPluginLatLonGridOptions._samples - 1) ~/ 2];
 
       // print median once to console
-      print('median of draw() is ${median} us (out of ${MapPluginLatLonGridOptions._SAMPLES} samples)');
+      print('median of draw() is $median us (out of ${MapPluginLatLonGridOptions._samples} samples)');
       // reset counter
       options._profilingValCount = 0;
     }
@@ -277,7 +277,7 @@ class _LatLonPainter extends CustomPainter {
   void drawText(Canvas canvas, double val, int digits, double posx, double posy,
       bool isLat) {
 
-    List<_GridLabel> list = List();
+    List<_GridLabel> list = [];
     _GridLabel label = _GridLabel(val, digits, posx, posy, isLat);
 
     // generate textPainter object from input data
@@ -401,7 +401,7 @@ class _LatLonPainter extends CustomPainter {
   // Generate a list of doubles between start and end with spacing inc
   List<double> generatePositions(double start, double end, double inc,
       bool extendedRange, double lowerBound, double upperBound) {
-    List<double> list = List();
+    List<double> list = [];
 
     // find first value
     double currentPos = roundUp(start, inc);
@@ -452,7 +452,7 @@ class _LatLonPainter extends CustomPainter {
 
   // Proven values taken from osmdroid LatLon function
   List<double> getIncrementor(int zoom) {
-    List<double> ret = List();
+    List<double> ret = [];
 
     List<double> lineSpacingDegrees =
       [45, 30, 15, 9, 6, 3, 2, 1, 0.5, 0.25,
