@@ -30,15 +30,15 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   MapController _mapController;
-  String _sLatLonZoom = 'unset';
-  int _val = 0;
+  String _sLatLonZoom = '';
+  double _rotation = 0.0;
 
-  void _updateRotation(double valNew) {
+  void _updateRotation(double valRotation) {
     setState(() {
-      _val = valNew.toInt();
+      _rotation = valRotation;
       _updateLabel();
     });
-    _mapController.rotate(valNew);
+    _mapController.rotate(valRotation);
   }
 
   void _updateLabel() {
@@ -46,9 +46,16 @@ class _HomePageState extends State<HomePage> {
       String lat = _mapController.center.latitude.toStringAsFixed(3);
       String lon = _mapController.center.longitude.toStringAsFixed(3);
       String zoom = _mapController.zoom.toStringAsFixed(2);
-      setState(() {
-        _sLatLonZoom = ('lat: $lat lon: $lon\nzoom: $zoom rotation: $_val');
-      });
+      String rotation = _rotation.toStringAsFixed(0);
+
+      // don't trigger rebuild while building aka. when the first build didn't finish yet
+      if (_sLatLonZoom == '') {
+        _sLatLonZoom = 'lat: $lat lon: $lon\nzoom: $zoom rotation: $rotation';
+      } else {
+        setState(() {
+          _sLatLonZoom = 'lat: $lat lon: $lon\nzoom: $zoom rotation: $rotation';
+        });
+      }
     }
   }
 
@@ -69,7 +76,7 @@ class _HomePageState extends State<HomePage> {
         actions: <Widget>[
           SizedBox(
             height: 50.0,
-            width: 250,
+            width: 250.0,
             child: Container(
               height: 80.0,
               color: Colors.blue,
@@ -123,19 +130,26 @@ class _HomePageState extends State<HomePage> {
             child: Align(
               alignment: Alignment.topRight,
               child: SizedBox(
-                height: 50,
-                width: 200,
+                height: 50.0,
+                width: 200.0,
                 child: Container(
                   color: Colors.blue,
-                  child: Slider(
-                    activeColor: Colors.white,
-                    inactiveColor: Colors.grey,
-                    value: _val.toDouble(),
-                    min: 0.0,
-                    max: 360.0,
-                    divisions: 360,
-                    onChanged: _updateRotation,
-                    label: '$_val',
+                  child: SliderTheme(
+                    data: SliderTheme.of(context).copyWith(
+                      valueIndicatorTextStyle: TextStyle(
+                        color: Colors.black,
+                      ),
+                    ),
+                    child: Slider(
+                      activeColor: Colors.white,
+                      inactiveColor: Colors.grey,
+                      value: _rotation,
+                      min: 0.0,
+                      max: 360.0,
+                      divisions: 360,
+                      onChanged: _updateRotation,
+                      label: _rotation.toStringAsFixed(0),
+                    ),
                   ),
                 ),
               ),
