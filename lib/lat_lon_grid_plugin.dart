@@ -333,10 +333,10 @@ class LatLonPainter extends CustomPainter {
     double currentPos = roundUp(start, inc);
     list.add(currentPos);
 
-    // bad coding style, use with caution
     // added assert statements for basic sanity check
-    // does still not guarantee termination for edge case values from inc
-    assert(inc > 0);
+    // minimal inc guarantees termination (?)
+    // still bad coding style, use with caution
+    assert(inc > 1E-5);
     assert(start < end);
     bool run = true;
     while (run) {
