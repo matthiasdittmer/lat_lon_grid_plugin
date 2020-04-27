@@ -63,6 +63,12 @@ class MapPluginLatLonGridOptions extends LayerOptions {
   static int SAMPLES = 100;
   List<int> profilingVals = List(SAMPLES);
   int profilingValCount = 0;
+
+  // flag to enable grouped label calls
+  // saves performance for rotated lon labels because canvas will be only
+  // rotated back and forth once
+  // default true (enabled)
+  bool groupedLabelCalls = true;
 }
 
 // MapPluginLatLonGrid
@@ -102,6 +108,7 @@ class GridLabel {
   double posy;
   bool isLat;
   String label;
+  TextPainter textPainter;
 
   GridLabel(this.val, this.digits, this.posx, this.posy, this.isLat);
 }
@@ -164,15 +171,15 @@ class LatLonPainter extends CustomPainter {
         canvas.drawLine(pTopNorth, pBottomSouth, mPaint);
 
         if (options.showLabels) {
-          // add to list
-          /*
-        lonGridLabels.add(GridLabel(lonPos[i], inc[1].toInt(), pixelPos,
-            h - options.offsetLonTextBottom, false));
-        */
-
-          // draw labels
-          drawText(canvas, lonPos[i], inc[1].toInt(), pixelPos,
-              h - options.offsetLonTextBottom, false);
+          if (options.groupedLabelCalls) {
+            // add to list
+            lonGridLabels.add(GridLabel(lonPos[i], inc[1].toInt(), pixelPos,
+                h - options.offsetLonTextBottom, false));
+          } else {
+            // draw labels
+            drawText(canvas, lonPos[i], inc[1].toInt(), pixelPos,
+                h - options.offsetLonTextBottom, false);
+          }
         }
       }
     }
@@ -194,18 +201,24 @@ class LatLonPainter extends CustomPainter {
         canvas.drawLine(pLeftWest, pRightEast, mPaint);
 
         if (options.showLabels) {
-          // add to list
-          /*
-        latGridLabels.add(
-            GridLabel(latPos[i], inc[1].toInt(), options.offsetLatTextLeft,
-                pixelPos, true));
-        */
-
-          // draw labels
-          drawText(canvas, latPos[i], inc[1].toInt(), options.offsetLatTextLeft,
-              pixelPos, true);
+          if(options.groupedLabelCalls) {
+            // add to list
+            latGridLabels.add(
+                GridLabel(latPos[i], inc[1].toInt(), options.offsetLatTextLeft,
+                    pixelPos, true));
+          } else {
+            // draw labels
+            drawText(canvas, latPos[i], inc[1].toInt(), options.offsetLatTextLeft,
+                pixelPos, true);
+          }
         }
       }
+    }
+
+    // group label call
+    if (options.groupedLabelCalls) {
+      drawLabels(canvas, lonGridLabels);
+      drawLabels(canvas, latGridLabels);
     }
 
     if(options.enableProfiling) {
@@ -235,53 +248,80 @@ class LatLonPainter extends CustomPainter {
   }
 
   // function gets a list of GridLabel objects
-  // Not used right now. Could be used to group and reduce canvas draw()
-  // and rotate() calls. Profiling shows no need for that right now.
+  // Used to group and reduce canvas draw() and rotate() calls.
   void drawLabels(Canvas canvas, List<GridLabel> list) {
-    // not implemented right now
+    // process items to generate text painter
+    for(int i = 0; i < list.length; i++) {
+      String sText = getText(list[i].val, list[i].digits, list[i].isLat);
+      list[i].textPainter = getTextPaint(sText);
+    }
+
+    // canvas call
+    canvasCall(canvas, list);
   }
 
   // draw one text label
   void drawText(Canvas canvas, double val, int digits, double posx, double posy,
       bool isLat) {
 
+    List<GridLabel> list = List();
+    GridLabel label = GridLabel(val, digits, posx, posy, isLat);
+
     // generate textPainter object from input data
     String sText = getText(val, digits, isLat);
-    TextPainter textPainter = getTextPaint(sText);
+    label.textPainter  = getTextPaint(sText);
+
+    // do the actual draw call, pass a list with one item
+    list.add(label);
+    canvasCall(canvas, list);
+  }
+
+  // can be used for a single item or list of items.
+  void canvasCall(Canvas canvas, List<GridLabel> list) {
+
+    // check for at least on entry
+    assert(list.length > 0);
 
     // check for longitude and enabled rotation
-    if (!isLat && options.rotateLonLabels) {
+    if (!list[0].isLat && options.rotateLonLabels) {
       // canvas is rotated around top left corner clock-wise
       // no other API call available
       // canvas.translate() is used for that use case, still keeping old code
       canvas.save();
       canvas.rotate(-90.0 / 180.0 * pi);
 
-      // calc compensated position and draw
-      double xCompensated = - posy - textPainter.height;
-      double yCompensated = posx;
-      if(options.placeLabelsOnLines) {
-        // apply additional offset
-        yCompensated = posx - textPainter.height / 2;
+      // loop for draw calls
+      for(int i = 0; i < list.length; i++) {
+        // calc compensated position and draw
+        double xCompensated = - list[i].posy - list[i].textPainter.height;
+        double yCompensated = list[i].posx;
+        if (options.placeLabelsOnLines) {
+          // apply additional offset
+          yCompensated = list[i].posx - list[i].textPainter.height / 2;
+        }
+        list[i].textPainter.paint(canvas, Offset(xCompensated, yCompensated));
       }
-      textPainter.paint(canvas, Offset(xCompensated, yCompensated));
 
       // restore canvas
       canvas.restore();
     } else {
-      // calc offset to place labels on lines
-      double offsetX = options.placeLabelsOnLines ? textPainter.width / 2 : 0;
-      double offsetY = options.placeLabelsOnLines ? textPainter.height / 2 : 0;
 
-      // reset unwanted offset depending on lat or lon
-      isLat ? offsetX = 0 : offsetY = 0;
+      // loop for draw calls
+      for(int i = 0; i < list.length; i++) {
+        // calc offset to place labels on lines
+        double offsetX = options.placeLabelsOnLines ?  list[i].textPainter.width / 2 : 0;
+        double offsetY = options.placeLabelsOnLines ?  list[i].textPainter.height / 2 : 0;
 
-      // apply offset
-      double x = posx - offsetX;
-      double y = posy - offsetY;
+        // reset unwanted offset depending on lat or lon
+        list[i].isLat ? offsetX = 0 : offsetY = 0;
 
-      // draw text
-      textPainter.paint(canvas, Offset(x, y));
+        // apply offset
+        double x =  list[i].posx - offsetX;
+        double y =  list[i].posy - offsetY;
+
+        // draw text
+        list[i].textPainter.paint(canvas, Offset(x, y));
+      }
     }
   }
 
