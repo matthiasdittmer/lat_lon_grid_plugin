@@ -1,3 +1,7 @@
+## [0.0.5] - 2020/04/27
+
+* Performance improvements for overscan and label rotation draw calls.
+
 ## [0.0.4] - 2020/04/26
 
 * Added more comments as documentation.
