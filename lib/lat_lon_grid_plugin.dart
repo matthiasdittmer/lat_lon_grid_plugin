@@ -52,8 +52,8 @@ class MapPluginLatLonGridOptions extends LayerOptions {
     this.showLabels = true,
     this.rotateLonLabels = true,
     this.placeLabelsOnLines = true,
-    this.offsetLonTextBottom = 50,
-    this.offsetLatTextLeft = 75,
+    this.offsetLonTextBottom = 50.0,
+    this.offsetLatTextLeft = 75.0,
     this.enableOverscan = true,
   });
 
@@ -105,7 +105,7 @@ class MapPluginLatLonGrid implements MapPlugin {
 
 // GridLabel
 class _GridLabel {
-  double val;
+  double degree;
   int digits;
   double posx;
   double posy;
@@ -113,12 +113,12 @@ class _GridLabel {
   String label;
   TextPainter textPainter;
 
-  _GridLabel(this.val, this.digits, this.posx, this.posy, this.isLat);
+  _GridLabel(this.degree, this.digits, this.posx, this.posy, this.isLat);
 }
 
 class _LatLonPainter extends CustomPainter {
-  double w = 0;
-  double h = 0;
+  double w = 0.0;
+  double h = 0.0;
   MapPluginLatLonGridOptions options;
   MapState mapState;
   final Paint mPaint = Paint();
@@ -167,15 +167,15 @@ class _LatLonPainter extends CustomPainter {
       double pixelPos = projected.x - topLeftPixel.x;
 
       // draw line
-      Offset pTopNorth = Offset(pixelPos, 0);
+      Offset pTopNorth = Offset(pixelPos, 0.0);
       Offset pBottomSouth = Offset(pixelPos, h);
       // only draw visible lines, using one complete line width as buffer
-      if(pixelPos + options.lineWidth >= 0 &&
+      if(pixelPos + options.lineWidth >= 0.0 &&
          pixelPos - options.lineWidth <= w) {
         canvas.drawLine(pTopNorth, pBottomSouth, mPaint);
       }
       // label logic
-      if(pixelPos + textPainterMaxDim >= 0 &&
+      if(pixelPos + textPainterMaxDim >= 0.0 &&
          pixelPos - textPainterMaxDim <= w) {
 
         if (options.showLabels) {
@@ -202,10 +202,10 @@ class _LatLonPainter extends CustomPainter {
       double pixelPos = projected.y - topLeftPixel.y;
 
       // draw line
-      Offset pLeftWest = Offset(0, pixelPos);
+      Offset pLeftWest = Offset(0.0, pixelPos);
       Offset pRightEast = Offset(w, pixelPos);
       // only draw visible lines, using one complete line width as buffer
-      if(pixelPos + options.lineWidth >= 0 &&
+      if(pixelPos + options.lineWidth >= 0.0 &&
           pixelPos - options.lineWidth <= h) {
         canvas.drawLine(pLeftWest, pRightEast, mPaint);
       }
@@ -235,17 +235,17 @@ class _LatLonPainter extends CustomPainter {
     }
 
     if(options._enableProfiling) {
-      addValForProfiling(DateTime.now().microsecondsSinceEpoch - options._time);
+      addTimeForProfiling(DateTime.now().microsecondsSinceEpoch - options._time);
     }
   }
 
   // add a value to the profiling array
   // search the console for the final results printed after sample count is collected
-  void addValForProfiling(int val) {
+  void addTimeForProfiling(int time) {
     // do add / calc logic
     if(options._profilingValCount < MapPluginLatLonGridOptions._samples) {
-      // add val
-      options._profilingVals[options._profilingValCount] = val;
+      // add time
+      options._profilingVals[options._profilingValCount] = time;
       options._profilingValCount++;
     } else {
       // calc median here, not using mean here
@@ -265,7 +265,7 @@ class _LatLonPainter extends CustomPainter {
   void drawLabels(Canvas canvas, List<_GridLabel> list) {
     // process items to generate text painter
     for(int i = 0; i < list.length; i++) {
-      String sText = getText(list[i].val, list[i].digits, list[i].isLat);
+      String sText = getText(list[i].degree, list[i].digits, list[i].isLat);
       list[i].textPainter = getTextPaint(sText);
     }
 
@@ -274,14 +274,14 @@ class _LatLonPainter extends CustomPainter {
   }
 
   // draw one text label
-  void drawText(Canvas canvas, double val, int digits, double posx, double posy,
+  void drawText(Canvas canvas, double degree, int digits, double posx, double posy,
       bool isLat) {
 
     List<_GridLabel> list = [];
-    _GridLabel label = _GridLabel(val, digits, posx, posy, isLat);
+    _GridLabel label = _GridLabel(degree, digits, posx, posy, isLat);
 
     // generate textPainter object from input data
-    String sText = getText(val, digits, isLat);
+    String sText = getText(degree, digits, isLat);
     label.textPainter  = getTextPaint(sText);
 
     // do the actual draw call, pass a list with one item
@@ -322,11 +322,11 @@ class _LatLonPainter extends CustomPainter {
       // loop for draw calls
       for(int i = 0; i < list.length; i++) {
         // calc offset to place labels on lines
-        double offsetX = options.placeLabelsOnLines ?  list[i].textPainter.width / 2 : 0;
-        double offsetY = options.placeLabelsOnLines ?  list[i].textPainter.height / 2 : 0;
+        double offsetX = options.placeLabelsOnLines ?  list[i].textPainter.width / 2 : 0.0;
+        double offsetY = options.placeLabelsOnLines ?  list[i].textPainter.height / 2 : 0.0;
 
         // reset unwanted offset depending on lat or lon
-        list[i].isLat ? offsetX = 0 : offsetY = 0;
+        list[i].isLat ? offsetX = 0.0 : offsetY = 0.0;
 
         // apply offset
         double x =  list[i].posx - offsetX;
@@ -338,29 +338,29 @@ class _LatLonPainter extends CustomPainter {
     }
   }
 
-  String getText(double val, int digits, bool isLat) {
+  String getText(double degree, int digits, bool isLat) {
     // add prefix if enabled
     String sAbbr = '';
     if (options.showCardinalDirections) {
       if (isLat) {
-        if (val > 0) {
+        if (degree > 0.0) {
           sAbbr = 'N';
         } else {
-          val *= -1;
+          degree *= -1.0;
           sAbbr = 'S';
         }
       } else {
-        if (val > 0) {
+        if (degree > 0.0) {
           sAbbr = 'E';
         } else {
-          val *= -1;
+          degree *= -1.0;
           sAbbr = 'W';
         }
       }
     }
     // convert degree value to text
     // with defined digits amount after decimal point
-    String sDegree = val.toStringAsFixed(digits).toString();
+    String sDegree = degree.toStringAsFixed(digits);
 
     // build text string
     String sText = '';
@@ -368,7 +368,7 @@ class _LatLonPainter extends CustomPainter {
       sText = sDegree;
     } else {
       // do not add for zero degrees
-      if (val != 0) {
+      if (degree != 0.0) {
         if (options.showCardinalDirectionsAsPrefix) {
           sText = sAbbr + sDegree;
         } else {
@@ -455,7 +455,7 @@ class _LatLonPainter extends CustomPainter {
     List<double> ret = [];
 
     List<double> lineSpacingDegrees =
-      [45, 30, 15, 9, 6, 3, 2, 1, 0.5, 0.25,
+      [45.0, 30.0, 15.0, 9.0, 6.0, 3.0, 2.0, 1.0, 0.5, 0.25,
         0.1, 0.05, 0.025, 0.0125, 0.00625, 0.003125, 0.0015625, 0.00078125,
         0.000390625, 0.0001953125, 0.00009765625, 0.000048828125,
         0.0000244140625];
