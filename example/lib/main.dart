@@ -31,14 +31,14 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   MapController _mapController;
   String _sLatLonZoom = 'unset';
-  int _val = 0;
+  double _rotation = 0.0;
 
-  void _updateRotation(double valNew) {
+  void _updateRotation(double valRotation) {
     setState(() {
-      _val = valNew.toInt();
+      _rotation = valRotation;
       _updateLabel();
     });
-    _mapController.rotate(valNew);
+    _mapController.rotate(valRotation);
   }
 
   void _updateLabel() {
@@ -46,8 +46,9 @@ class _HomePageState extends State<HomePage> {
       String lat = _mapController.center.latitude.toStringAsFixed(3);
       String lon = _mapController.center.longitude.toStringAsFixed(3);
       String zoom = _mapController.zoom.toStringAsFixed(2);
+      String rotation = _rotation.toStringAsFixed(0);
       setState(() {
-        _sLatLonZoom = 'lat: $lat lon: $lon\nzoom: $zoom rotation: $_val';
+        _sLatLonZoom = 'lat: $lat lon: $lon\nzoom: $zoom rotation: $rotation';
       });
     }
   }
@@ -136,12 +137,12 @@ class _HomePageState extends State<HomePage> {
                     child: Slider(
                       activeColor: Colors.white,
                       inactiveColor: Colors.grey,
-                      value: _val.toDouble(),
+                      value: _rotation,
                       min: 0.0,
                       max: 360.0,
                       divisions: 360,
                       onChanged: _updateRotation,
-                      label: '$_val',
+                      label: _rotation.toStringAsFixed(0),
                     ),
                   ),
                 ),
