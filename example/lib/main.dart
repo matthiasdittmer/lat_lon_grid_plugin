@@ -5,6 +5,7 @@ import 'package:latlong/latlong.dart';
 
 void main() => runApp(MyApp());
 
+/// Sample application
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -18,6 +19,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
+/// HomePage
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
 

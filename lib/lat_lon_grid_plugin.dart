@@ -7,39 +7,40 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map/plugin_api.dart';
 import 'package:latlong/latlong.dart';
 
-// MapPluginLatLonGridOptions
+/// MapPluginLatLonGridOptions
 class MapPluginLatLonGridOptions extends LayerOptions {
-  // color of grid lines
+  /// color of grid lines
   Color lineColor;
-  // width of grid lines
-  // can be adjusted even down to 0.1 on high res displays for a light grid
+  /// width of grid lines
+  /// can be adjusted even down to 0.1 on high res displays for a light grid
   double lineWidth = 0.5;
-  // color of grid labels
+  /// color of grid labels
   Color textColor;
-  // background color of labels
+  /// background color of labels
   Color textBackgroundColor;
-  // show cardinal directions instead of numbers only
+  /// show cardinal directions instead of numbers only
   // prevents negative numbers, e.g. 45.5W instead of -45.5
   bool showCardinalDirections = false;
-  // show cardinal direction as prefix, e.g. W45.5 instead of 45.5W
+  /// show cardinal direction as prefix, e.g. W45.5 instead of 45.5W
   bool showCardinalDirectionsAsPrefix = false;
-  // text size for labels
+  /// text size for labels
   double textSize = 12.0;
-  // enable labels
+  /// enable labels
   bool showLabels = true;
-  // rotate longitude labels 90 degrees
-  // mainly to prevent overlapping on high zoom levels
+  /// rotate longitude labels 90 degrees
+  /// mainly to prevent overlapping on high zoom levels
   bool rotateLonLabels = true;
-  // center labels on lines instead of top edge alignment
+  /// center labels on lines instead of top edge alignment
   bool placeLabelsOnLines = true;
-  // offset for longitude labels from the 'bottom' (north up)
+  /// offset for longitude labels from the 'bottom' (north up)
   double offsetLonTextBottom = 50;
-  // offset for latitude labels from the 'left' (north up)
+  /// offset for latitude labels from the 'left' (north up)
   double offsetLatTextLeft = 75;
-  // overscan ensures that labels are visible even if line is not already
-  // prevents label popup effect when sliding in
+  /// overscan ensures that labels are visible even if line is not already
+  /// prevents label popup effect when sliding in
   bool enableOverscan = true;
 
+  /// MapPluginLatLonGridOptions
   MapPluginLatLonGridOptions({
     this.lineColor = Colors.black,
     this.textColor = Colors.white,
@@ -56,25 +57,27 @@ class MapPluginLatLonGridOptions extends LayerOptions {
     this.enableOverscan = true,
   });
 
-  // enable to do basic profiling for draw() function
-  // default disabled
-  bool enableProfiling = false;
-  int time = 0;
-  static int SAMPLES = 100;
-  List<int> profilingVals = List(SAMPLES);
-  int profilingValCount = 0;
+  /// enable to do basic profiling for draw() function
+  /// default disabled
+  bool _enableProfiling = false;
+  int _time = 0;
+  static int _SAMPLES = 100;
+  List<int> _profilingVals = List(_SAMPLES);
+  int _profilingValCount = 0;
 
-  // flag to enable grouped label calls
-  // saves performance for rotated lon labels because canvas will be only
-  // rotated back and forth once
-  // default true (enabled)
-  bool groupedLabelCalls = true;
+  /// flag to enable grouped label calls
+  /// saves performance for rotated lon labels because canvas will be only
+  /// rotated back and forth once
+  /// default true (enabled)
+  bool _groupedLabelCalls = true;
 }
 
-// MapPluginLatLonGrid
+/// MapPluginLatLonGrid
 class MapPluginLatLonGrid implements MapPlugin {
+  /// MapPluginLatLonGridOptions
   final MapPluginLatLonGridOptions options;
 
+  /// Plugin options
   MapPluginLatLonGrid({this.options});
 
   @override
@@ -86,7 +89,7 @@ class MapPluginLatLonGrid implements MapPlugin {
           // the child empty Container ensures that CustomPainter gets a size
           // (not w=0 and h=0)
           child: Container(),
-          painter: LatLonPainter(options: options, mapState: mapState),
+          painter: _LatLonPainter(options: options, mapState: mapState),
         ),
       );
     }
@@ -101,7 +104,7 @@ class MapPluginLatLonGrid implements MapPlugin {
 }
 
 // GridLabel
-class GridLabel {
+class _GridLabel {
   double val;
   int digits;
   double posx;
@@ -110,10 +113,10 @@ class GridLabel {
   String label;
   TextPainter textPainter;
 
-  GridLabel(this.val, this.digits, this.posx, this.posy, this.isLat);
+  _GridLabel(this.val, this.digits, this.posx, this.posy, this.isLat);
 }
 
-class LatLonPainter extends CustomPainter {
+class _LatLonPainter extends CustomPainter {
   double w = 0;
   double h = 0;
   MapPluginLatLonGridOptions options;
@@ -121,10 +124,10 @@ class LatLonPainter extends CustomPainter {
   final Paint mPaint = Paint();
 
   // not used right now, left in code
-  List<GridLabel> lonGridLabels = List();
-  List<GridLabel> latGridLabels = List();
+  List<_GridLabel> lonGridLabels = List();
+  List<_GridLabel> latGridLabels = List();
 
-  LatLonPainter({this.options, this.mapState}) {
+  _LatLonPainter({this.options, this.mapState}) {
     mPaint.color = options.lineColor;
     mPaint.strokeWidth = options.lineWidth;
     mPaint.isAntiAlias = true; // default anyway
@@ -132,8 +135,8 @@ class LatLonPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    if (options.enableProfiling) {
-      options.time = DateTime.now().microsecondsSinceEpoch;
+    if (options._enableProfiling) {
+      options._time = DateTime.now().microsecondsSinceEpoch;
     }
 
     w = size.width;
@@ -151,7 +154,7 @@ class LatLonPainter extends CustomPainter {
     CustomPoint topLeftPixel = b.topLeft;
 
     // getting the dimensions for a maximal sized text label
-    TextPainter textPainterMax = getTextPaint("180W");
+    TextPainter textPainterMax = getTextPaint('180W');
     double textPainterMaxDim = textPainterMax.height;
 
     // draw north-south lines
@@ -176,9 +179,9 @@ class LatLonPainter extends CustomPainter {
          pixelPos - textPainterMaxDim <= w) {
 
         if (options.showLabels) {
-          if (options.groupedLabelCalls) {
+          if (options._groupedLabelCalls) {
             // add to list
-            lonGridLabels.add(GridLabel(lonPos[i], inc[1].toInt(), pixelPos,
+            lonGridLabels.add(_GridLabel(lonPos[i], inc[1].toInt(), pixelPos,
                 h - options.offsetLonTextBottom, false));
           } else {
             // draw labels
@@ -211,10 +214,10 @@ class LatLonPainter extends CustomPainter {
          pixelPos + textPainterMaxDim >= 0) {
 
         if (options.showLabels) {
-          if(options.groupedLabelCalls) {
+          if(options._groupedLabelCalls) {
             // add to list
             latGridLabels.add(
-                GridLabel(latPos[i], inc[1].toInt(), options.offsetLatTextLeft,
+                _GridLabel(latPos[i], inc[1].toInt(), options.offsetLatTextLeft,
                     pixelPos, true));
           } else {
             // draw labels
@@ -226,13 +229,13 @@ class LatLonPainter extends CustomPainter {
     }
 
     // group label call
-    if (options.groupedLabelCalls) {
+    if (options._groupedLabelCalls) {
       drawLabels(canvas, lonGridLabels);
       drawLabels(canvas, latGridLabels);
     }
 
-    if(options.enableProfiling) {
-      addValForProfiling(DateTime.now().microsecondsSinceEpoch - options.time);
+    if(options._enableProfiling) {
+      addValForProfiling(DateTime.now().microsecondsSinceEpoch - options._time);
     }
   }
 
@@ -240,26 +243,26 @@ class LatLonPainter extends CustomPainter {
   // search the console for the final results printed after sample count is collected
   void addValForProfiling(int val) {
     // do add / calc logic
-    if(options.profilingValCount < MapPluginLatLonGridOptions.SAMPLES) {
+    if(options._profilingValCount < MapPluginLatLonGridOptions._SAMPLES) {
       // add val
-      options.profilingVals[options.profilingValCount] = val;
-      options.profilingValCount++;
+      options._profilingVals[options._profilingValCount] = val;
+      options._profilingValCount++;
     } else {
       // calc median here, not using mean here
       // use "effective integer division" as suggested from IDE
-      options.profilingVals.sort();
-      int median = options.profilingVals[(MapPluginLatLonGridOptions.SAMPLES - 1) ~/ 2];
+      options._profilingVals.sort();
+      int median = options._profilingVals[(MapPluginLatLonGridOptions._SAMPLES - 1) ~/ 2];
 
       // print median once to console
-      print('median of draw() is ${median} us (out of ${MapPluginLatLonGridOptions.SAMPLES} samples)');
+      print('median of draw() is ${median} us (out of ${MapPluginLatLonGridOptions._SAMPLES} samples)');
       // reset counter
-      options.profilingValCount = 0;
+      options._profilingValCount = 0;
     }
   }
 
   // function gets a list of GridLabel objects
   // Used to group and reduce canvas draw() and rotate() calls.
-  void drawLabels(Canvas canvas, List<GridLabel> list) {
+  void drawLabels(Canvas canvas, List<_GridLabel> list) {
     // process items to generate text painter
     for(int i = 0; i < list.length; i++) {
       String sText = getText(list[i].val, list[i].digits, list[i].isLat);
@@ -274,8 +277,8 @@ class LatLonPainter extends CustomPainter {
   void drawText(Canvas canvas, double val, int digits, double posx, double posy,
       bool isLat) {
 
-    List<GridLabel> list = List();
-    GridLabel label = GridLabel(val, digits, posx, posy, isLat);
+    List<_GridLabel> list = List();
+    _GridLabel label = _GridLabel(val, digits, posx, posy, isLat);
 
     // generate textPainter object from input data
     String sText = getText(val, digits, isLat);
@@ -287,7 +290,7 @@ class LatLonPainter extends CustomPainter {
   }
 
   // can be used for a single item or list of items.
-  void canvasCall(Canvas canvas, List<GridLabel> list) {
+  void canvasCall(Canvas canvas, List<_GridLabel> list) {
 
     // check for at least on entry
     assert(list.length > 0);
@@ -391,7 +394,7 @@ class LatLonPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(LatLonPainter oldDelegate) {
+  bool shouldRepaint(_LatLonPainter oldDelegate) {
     return false;
   }
 

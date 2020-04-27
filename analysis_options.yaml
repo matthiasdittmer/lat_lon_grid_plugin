@@ -7,3 +7,4 @@ linter:
     - unnecessary_new
     - always_declare_return_types
     - type_annotate_public_apis
+    - public_member_api_docs
