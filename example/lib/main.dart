@@ -30,7 +30,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   MapController _mapController;
-  String _sLatLonZoom = 'unset';
+  String _sLatLonZoom = '';
   double _rotation = 0.0;
 
   void _updateRotation(double valRotation) {
@@ -47,9 +47,15 @@ class _HomePageState extends State<HomePage> {
       String lon = _mapController.center.longitude.toStringAsFixed(3);
       String zoom = _mapController.zoom.toStringAsFixed(2);
       String rotation = _rotation.toStringAsFixed(0);
-      setState(() {
+
+      // don't trigger rebuild while building aka. when the first build didn't finish yet
+      if (_sLatLonZoom == '') {
         _sLatLonZoom = 'lat: $lat lon: $lon\nzoom: $zoom rotation: $rotation';
-      });
+      } else {
+        setState(() {
+          _sLatLonZoom = 'lat: $lat lon: $lon\nzoom: $zoom rotation: $rotation';
+        });
+      }
     }
   }
 
