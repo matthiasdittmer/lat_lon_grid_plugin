@@ -1,3 +1,8 @@
+## [0.0.6] - 2020/04/27
+
+* Clean up.
+* Minor Performance improvements for line drawing.
+
 ## [0.0.5] - 2020/04/27
 
 * Performance improvements for overscan and label rotation draw calls.
