@@ -56,7 +56,7 @@ class MapPluginLatLonGridOptions extends LayerOptions {
   /// overscan ensures that labels are visible even if line is not already
   /// prevents label popup effect when sliding in
   /// default enabled
-  bool enableOverscan = true;
+  final bool _enableOverscan = true;
 
   /// enable to do basic profiling for draw() function
   /// default disabled
@@ -159,7 +159,7 @@ class _LatLonPainter extends CustomPainter {
     double textPainterMaxDim = textPainterMax.height;
 
     // draw north-south lines
-    List<double> lonPos = generatePositions(west, east, inc[0], options.enableOverscan, -180.0, 180.0);
+    List<double> lonPos = generatePositions(west, east, inc[0], options._enableOverscan, -180.0, 180.0);
     lonGridLabels.clear();
     for (int i = 0; i < lonPos.length; i++) {
       // convert point to pixels
@@ -183,18 +183,18 @@ class _LatLonPainter extends CustomPainter {
           if (options._groupedLabelCalls) {
             // add to list
             lonGridLabels.add(_GridLabel(lonPos[i], inc[1].toInt(), pixelPos,
-                h - options.offsetLonTextBottom, false));
+                h - options.offsetLonTextBottom - textPainterMaxDim, false));
           } else {
             // draw labels
             drawText(canvas, lonPos[i], inc[1].toInt(), pixelPos,
-                h - options.offsetLonTextBottom, false);
+                h - options.offsetLonTextBottom - textPainterMaxDim, false);
           }
         }
       }
     }
 
     // draw west-east lines
-    List<double> latPos = generatePositions(south, north, inc[0], options.enableOverscan, -90.0, 90.0);
+    List<double> latPos = generatePositions(south, north, inc[0], options._enableOverscan, -90.0, 90.0);
     latGridLabels.clear();
     for (int i = 0; i < latPos.length; i++) {
       // convert back to pixels

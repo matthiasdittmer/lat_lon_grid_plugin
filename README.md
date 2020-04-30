@@ -20,7 +20,7 @@ dependencies:
 
 Include the `FlutterMap` into your widget tree.
 
-Please note: Make sure to place the `MapPluginLatLonGridOptions()` right after `TileLayerOptions` so it does not consume touch events from other layer widgets.
+Please note: Make sure to place the `MapPluginLatLonGridOptions()` right after `TileLayerOptions()` so it does not consume touch events from other layer widgets.
 
 ```dart
   FlutterMap(
@@ -41,10 +41,16 @@ Please note: Make sure to place the `MapPluginLatLonGridOptions()` right after `
       MapPluginLatLonGridOptions(
         lineColor: Colors.black,
         textColor: Colors.white,
+        lineWidth: 0.5,
         textBackgroundColor: Colors.black,
-        rotateLonLabels: false,
         showCardinalDirections: true,
-        // plus other parameters ...
+        showCardinalDirectionsAsPrefix: false,
+        textSize: 12.0,
+        showLabels: true,
+        rotateLonLabels: true,
+        placeLabelsOnLines: true,
+        offsetLonTextBottom: 20.0,
+        offsetLatTextLeft: 20.0,
       ),
     ],
   ),
