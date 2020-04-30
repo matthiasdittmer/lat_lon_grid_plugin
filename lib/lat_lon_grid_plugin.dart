@@ -36,9 +36,6 @@ class MapPluginLatLonGridOptions extends LayerOptions {
   double offsetLonTextBottom = 50;
   /// offset for latitude labels from the 'left' (north up)
   double offsetLatTextLeft = 75;
-  /// overscan ensures that labels are visible even if line is not already
-  /// prevents label popup effect when sliding in
-  bool enableOverscan = true;
 
   /// MapPluginLatLonGridOptions
   MapPluginLatLonGridOptions({
@@ -54,8 +51,12 @@ class MapPluginLatLonGridOptions extends LayerOptions {
     this.placeLabelsOnLines = true,
     this.offsetLonTextBottom = 50.0,
     this.offsetLatTextLeft = 75.0,
-    this.enableOverscan = true,
   });
+
+  /// overscan ensures that labels are visible even if line is not already
+  /// prevents label popup effect when sliding in
+  /// default enabled
+  bool enableOverscan = true;
 
   /// enable to do basic profiling for draw() function
   /// default disabled
