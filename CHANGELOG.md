@@ -1,3 +1,9 @@
+## [0.1.1] - 2020/04/30
+
+* Minor fixes.
+* Parameter offsetLonTextBottom has now correct bottom alignment with value 0.0.
+* overscan is enabled by default. Not exposed to user anymore.
+
 ## [0.1.0] - 2020/04/27
 
 * Version bump.
