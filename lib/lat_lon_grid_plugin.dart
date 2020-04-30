@@ -409,17 +409,21 @@ class _LatLonPainter extends CustomPainter {
     list.add(currentPos);
 
     // added assert statements for basic sanity check
-    // minimal inc guarantees termination (?)
-    // still bad coding style, use with caution
+    // upperLimit counter guarantees termination
     assert(inc > 1E-5);
     assert(start < end);
+    // calc upper limit for iterations
+    double upperLimit = (end - start) / inc;
+    int counter = 0;
+
     bool run = true;
-    while (run) {
+    while (run && counter <= upperLimit.ceil()) {
       currentPos += inc;
       list.add(currentPos);
       if (currentPos >= end) {
         run = false;
       }
+      counter++;
     }
 
     // check for extended range
