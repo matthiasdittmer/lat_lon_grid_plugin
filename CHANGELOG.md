@@ -1,3 +1,8 @@
+## [0.1.2] - 2020/05/01
+
+* Minimal fixes for label painting logic.
+* Slowing down release speed from now on.
+
 ## [0.1.1] - 2020/04/30
 
 * Minor fixes.
