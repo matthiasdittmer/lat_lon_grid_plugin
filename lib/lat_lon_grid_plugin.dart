@@ -155,9 +155,11 @@ class _LatLonPainter extends CustomPainter {
     CustomPoint topLeftPixel = b.topLeft;
 
     // getting the dimensions for a maximal sized text label
-    // width is the maximal dimension
     TextPainter textPainterMax = getTextPaint('180W');
-    double textPainterMaxDim = textPainterMax.width;
+    // maximal width for this label text
+    double textPainterMaxW = textPainterMax.width;
+    // height is equal for all unrotated labels
+    double textPainterH = textPainterMax.height;
 
     // draw north-south lines
     List<double> lonPos = generatePositions(west, east, inc[0], options._enableOverscan, -180.0, 180.0);
@@ -177,18 +179,18 @@ class _LatLonPainter extends CustomPainter {
         canvas.drawLine(pTopNorth, pBottomSouth, mPaint);
       }
       // label logic
-      if(pixelPos + textPainterMaxDim >= 0.0 &&
-         pixelPos - textPainterMaxDim <= w) {
+      if(pixelPos + textPainterMaxW >= 0.0 &&
+         pixelPos - textPainterMaxW <= w) {
 
         if (options.showLabels) {
           if (options._groupedLabelCalls) {
             // add to list
             lonGridLabels.add(_GridLabel(lonPos[i], inc[1].toInt(), pixelPos,
-                h - options.offsetLonTextBottom - textPainterMaxDim, false));
+                h - options.offsetLonTextBottom - textPainterH, false));
           } else {
             // draw labels
             drawText(canvas, lonPos[i], inc[1].toInt(), pixelPos,
-                h - options.offsetLonTextBottom - textPainterMaxDim, false);
+                h - options.offsetLonTextBottom - textPainterH, false);
           }
         }
       }
@@ -212,8 +214,8 @@ class _LatLonPainter extends CustomPainter {
         canvas.drawLine(pLeftWest, pRightEast, mPaint);
       }
       // label logic
-      if(pixelPos - textPainterMaxDim <= h &&
-         pixelPos + textPainterMaxDim >= 0) {
+      if(pixelPos - textPainterMaxW <= h &&
+         pixelPos + textPainterMaxW >= 0) {
 
         if (options.showLabels) {
           if(options._groupedLabelCalls) {
