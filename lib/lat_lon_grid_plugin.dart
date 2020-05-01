@@ -124,7 +124,7 @@ class _LatLonPainter extends CustomPainter {
   MapState mapState;
   final Paint mPaint = Paint();
 
-  // not used right now, left in code
+  // list of grid labels for latitude and longitude
   List<_GridLabel> lonGridLabels = [];
   List<_GridLabel> latGridLabels = [];
 
