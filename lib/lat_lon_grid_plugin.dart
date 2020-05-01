@@ -155,8 +155,9 @@ class _LatLonPainter extends CustomPainter {
     CustomPoint topLeftPixel = b.topLeft;
 
     // getting the dimensions for a maximal sized text label
+    // width is the maximal dimension
     TextPainter textPainterMax = getTextPaint('180W');
-    double textPainterMaxDim = textPainterMax.height;
+    double textPainterMaxDim = textPainterMax.width;
 
     // draw north-south lines
     List<double> lonPos = generatePositions(west, east, inc[0], options._enableOverscan, -180.0, 180.0);
