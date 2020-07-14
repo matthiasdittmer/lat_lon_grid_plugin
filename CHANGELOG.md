@@ -1,3 +1,8 @@
+## [0.1.3] - 2020/07/14
+
+* Upgrading library dependencies.
+* Upgrading example dependency.
+
 ## [0.1.2] - 2020/05/01
 
 * Minimal fixes for label painting logic.
