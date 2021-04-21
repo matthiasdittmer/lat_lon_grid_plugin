@@ -5,7 +5,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map/plugin_api.dart';
-import 'package:latlong/latlong.dart';
+import 'package:latlong2/latlong.dart';
 
 /// MapPluginLatLonGridOptions
 class MapPluginLatLonGridOptions extends LayerOptions {
@@ -63,7 +63,7 @@ class MapPluginLatLonGridOptions extends LayerOptions {
   final bool _enableProfiling = false;
   int _time = 0;
   static const int _samples = 100;
-  final List<int> _profilingVals = List(_samples);
+  final List<int> _profilingVals = [_samples];
   int _profilingValCount = 0;
 
   /// flag to enable grouped label calls
