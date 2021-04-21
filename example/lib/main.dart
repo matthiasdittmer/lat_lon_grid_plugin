@@ -24,14 +24,14 @@ class MyApp extends StatelessWidget {
 /// HomePage which shows the use of the plugin
 class HomePage extends StatefulWidget {
   /// constructor for the HomePage widget
-  HomePage({Key key}) : super(key: key);
+  HomePage({Key? key}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  MapController _mapController;
+  MapController? _mapController;
   String _sLatLonZoom = '';
   double _rotation = 0.0;
 
@@ -40,14 +40,14 @@ class _HomePageState extends State<HomePage> {
       _rotation = valRotation;
       _updateLabel();
     });
-    _mapController.rotate(valRotation);
+    _mapController!.rotate(valRotation);
   }
 
   void _updateLabel() {
     if (_mapController != null) {
-      String lat = _mapController.center.latitude.toStringAsFixed(3);
-      String lon = _mapController.center.longitude.toStringAsFixed(3);
-      String zoom = _mapController.zoom.toStringAsFixed(2);
+      String lat = _mapController!.center.latitude.toStringAsFixed(3);
+      String lon = _mapController!.center.longitude.toStringAsFixed(3);
+      String zoom = _mapController!.zoom.toStringAsFixed(2);
       String rotation = _rotation.toStringAsFixed(0);
 
       // don't trigger rebuild while building aka. when the first build didn't finish yet
@@ -67,7 +67,7 @@ class _HomePageState extends State<HomePage> {
     _mapController = MapController();
     // hacked together
     // https://stackoverflow.com/questions/49466556/flutter-run-method-on-widget-build-complete
-    WidgetsBinding.instance.addPostFrameCallback((_) => _updateLabel());
+    WidgetsBinding.instance!.addPostFrameCallback((_) => _updateLabel());
   }
 
   @override
