@@ -31,6 +31,12 @@ dev_dependencies:
   lat_lon_grid_plugin:
     path: ../
 
+dependency_overrides:
+  flutter_map:
+    git:
+      url: git://github.com/fleaflet/flutter_map.git
+      ref: 2ff083d5f57cc372a8b5b46c8d8fe806326a1bcb # branch: issues/829-nullsafety
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
