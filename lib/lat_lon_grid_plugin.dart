@@ -1,7 +1,5 @@
 library lat_lon_grid_plugin;
 
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map/plugin_api.dart';
@@ -146,10 +144,10 @@ class _LatLonPainter extends CustomPainter {
 
     // store bounds
     // mapState.bounds cannot actually be null
-    double north = mapState.bounds!.north;
-    double west = mapState.bounds!.west;
-    double south = mapState.bounds!.south;
-    double east = mapState.bounds!.east;
+    double north = mapState.bounds.north;
+    double west = mapState.bounds.west;
+    double south = mapState.bounds.south;
+    double east = mapState.bounds.east;
 
     Bounds b = mapState.getPixelBounds(mapState.zoom);
     CustomPoint topLeftPixel = b.topLeft;

@@ -7,7 +7,7 @@ packages:
       name: async
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.5.0"
+    version: "2.6.1"
   boolean_selector:
     dependency: transitive
     description:
@@ -55,27 +55,32 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_image:
-    dependency: transitive
-    description:
-      name: flutter_image
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.0.0"
   flutter_map:
     dependency: "direct main"
     description:
-      path: "."
-      ref: "2ff083d5f57cc372a8b5b46c8d8fe806326a1bcb"
-      resolved-ref: "2ff083d5f57cc372a8b5b46c8d8fe806326a1bcb"
-      url: "git://github.com/fleaflet/flutter_map.git"
-    source: git
-    version: "0.12.0"
+      name: flutter_map
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.13.0"
   flutter_test:
     dependency: "direct dev"
     description: flutter
     source: sdk
     version: "0.0.0"
+  http:
+    dependency: transitive
+    description:
+      name: http
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.13.3"
+  http_parser:
+    dependency: transitive
+    description:
+      name: http_parser
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.0.0"
   intl:
     dependency: transitive
     description:
@@ -125,6 +130,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.8.0"
+  pedantic:
+    dependency: transitive
+    description:
+      name: pedantic
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.11.0"
   positioned_tap_detector_2:
     dependency: transitive
     description:
@@ -157,7 +169,7 @@ packages:
       name: source_span
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.8.0"
+    version: "1.8.1"
   stack_trace:
     dependency: transitive
     description:
@@ -192,7 +204,7 @@ packages:
       name: test_api
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.19"
+    version: "0.3.0"
   transparent_image:
     dependency: transitive
     description:
@@ -237,4 +249,4 @@ packages:
     version: "2.0.0"
 sdks:
   dart: ">=2.12.0 <3.0.0"
-  flutter: ">=1.10.15-pre.144"
+  flutter: ">=2.0.0"
