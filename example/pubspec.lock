@@ -62,27 +62,32 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_image:
-    dependency: transitive
-    description:
-      name: flutter_image
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.0.0"
   flutter_map:
     dependency: "direct dev"
     description:
-      path: "."
-      ref: "2ff083d5f57cc372a8b5b46c8d8fe806326a1bcb"
-      resolved-ref: "2ff083d5f57cc372a8b5b46c8d8fe806326a1bcb"
-      url: "git://github.com/fleaflet/flutter_map.git"
-    source: git
-    version: "0.12.0"
+      name: flutter_map
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.13.1"
   flutter_test:
     dependency: "direct dev"
     description: flutter
     source: sdk
     version: "0.0.0"
+  http:
+    dependency: transitive
+    description:
+      name: http
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.13.3"
+  http_parser:
+    dependency: transitive
+    description:
+      name: http_parser
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.0.0"
   intl:
     dependency: transitive
     description:
@@ -139,6 +144,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.8.0"
+  pedantic:
+    dependency: transitive
+    description:
+      name: pedantic
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.11.0"
   positioned_tap_detector_2:
     dependency: transitive
     description:
