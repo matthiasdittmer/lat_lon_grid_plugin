@@ -1,11 +1,9 @@
 library lat_lon_grid_plugin;
 
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map/plugin_api.dart';
-import 'package:latlong/latlong.dart';
+import 'package:latlong2/latlong.dart';
 
 /// MapPluginLatLonGridOptions
 class MapPluginLatLonGridOptions extends LayerOptions {
@@ -63,7 +61,7 @@ class MapPluginLatLonGridOptions extends LayerOptions {
   final bool _enableProfiling = false;
   int _time = 0;
   static const int _samples = 100;
-  final List<int> _profilingVals = List(_samples);
+  final List<int> _profilingVals = [_samples];
   int _profilingValCount = 0;
 
   /// flag to enable grouped label calls
@@ -76,14 +74,13 @@ class MapPluginLatLonGridOptions extends LayerOptions {
 /// MapPluginLatLonGrid
 class MapPluginLatLonGrid implements MapPlugin {
   /// MapPluginLatLonGridOptions
-  final MapPluginLatLonGridOptions options;
+  final MapPluginLatLonGridOptions? options;
 
   /// Plugin options
   MapPluginLatLonGrid({this.options});
 
   @override
-  Widget createLayer(LayerOptions options, MapState mapState,
-      Stream<Null> stream) {
+  Widget createLayer(LayerOptions options, MapState mapState, Stream<Null> stream) {
     if (options is MapPluginLatLonGridOptions) {
       return Center(
         child: CustomPaint(
@@ -111,8 +108,8 @@ class _GridLabel {
   double posx;
   double posy;
   bool isLat;
-  String label;
-  TextPainter textPainter;
+  String? label;
+  late TextPainter textPainter;
 
   _GridLabel(this.degree, this.digits, this.posx, this.posy, this.isLat);
 }
@@ -128,7 +125,7 @@ class _LatLonPainter extends CustomPainter {
   List<_GridLabel> lonGridLabels = [];
   List<_GridLabel> latGridLabels = [];
 
-  _LatLonPainter({this.options, this.mapState}) {
+  _LatLonPainter({required this.options, required this.mapState}) {
     mPaint.color = options.lineColor;
     mPaint.strokeWidth = options.lineWidth;
     mPaint.isAntiAlias = true; // default anyway
@@ -146,6 +143,7 @@ class _LatLonPainter extends CustomPainter {
     List<double> inc = getIncrementor(mapState.zoom.round());
 
     // store bounds
+    // mapState.bounds cannot actually be null
     double north = mapState.bounds.north;
     double west = mapState.bounds.west;
     double south = mapState.bounds.south;
@@ -167,20 +165,18 @@ class _LatLonPainter extends CustomPainter {
     for (int i = 0; i < lonPos.length; i++) {
       // convert point to pixels
       CustomPoint projected =
-          mapState.project(LatLng(north, lonPos[i]), mapState.zoom);
-      double pixelPos = projected.x - topLeftPixel.x;
+      mapState.project(LatLng(north, lonPos[i]), mapState.zoom);
+      double pixelPos = projected.x - (topLeftPixel.x as double);
 
       // draw line
       Offset pTopNorth = Offset(pixelPos, 0.0);
       Offset pBottomSouth = Offset(pixelPos, h);
       // only draw visible lines, using one complete line width as buffer
-      if(pixelPos + options.lineWidth >= 0.0 &&
-         pixelPos - options.lineWidth <= w) {
+      if(pixelPos + options.lineWidth >= 0.0 && pixelPos - options.lineWidth <= w) {
         canvas.drawLine(pTopNorth, pBottomSouth, mPaint);
       }
       // label logic
-      if(pixelPos + textPainterMaxW >= 0.0 &&
-         pixelPos - textPainterMaxW <= w) {
+      if(pixelPos + textPainterMaxW >= 0.0 && pixelPos - textPainterMaxW <= w) {
 
         if (options.showLabels) {
           if (options._groupedLabelCalls) {
@@ -201,32 +197,27 @@ class _LatLonPainter extends CustomPainter {
     latGridLabels.clear();
     for (int i = 0; i < latPos.length; i++) {
       // convert back to pixels
-      CustomPoint projected =
-          mapState.project(LatLng(latPos[i], east), mapState.zoom);
-      double pixelPos = projected.y - topLeftPixel.y;
+      CustomPoint projected = mapState.project(LatLng(latPos[i], east), mapState.zoom);
+      double pixelPos = projected.y - (topLeftPixel.y as double);
 
       // draw line
       Offset pLeftWest = Offset(0.0, pixelPos);
       Offset pRightEast = Offset(w, pixelPos);
       // only draw visible lines, using one complete line width as buffer
-      if(pixelPos + options.lineWidth >= 0.0 &&
-          pixelPos - options.lineWidth <= h) {
+      if(pixelPos + options.lineWidth >= 0.0 && pixelPos - options.lineWidth <= h) {
         canvas.drawLine(pLeftWest, pRightEast, mPaint);
       }
       // label logic
-      if(pixelPos - textPainterMaxW <= h &&
-         pixelPos + textPainterMaxW >= 0) {
+      if(pixelPos - textPainterMaxW <= h && pixelPos + textPainterMaxW >= 0) {
 
         if (options.showLabels) {
           if(options._groupedLabelCalls) {
             // add to list
             latGridLabels.add(
-                _GridLabel(latPos[i], inc[1].toInt(), options.offsetLatTextLeft,
-                    pixelPos, true));
+                _GridLabel(latPos[i], inc[1].toInt(), options.offsetLatTextLeft, pixelPos, true));
           } else {
             // draw labels
-            drawText(canvas, latPos[i], inc[1].toInt(), options.offsetLatTextLeft,
-                pixelPos, true);
+            drawText(canvas, latPos[i], inc[1].toInt(), options.offsetLatTextLeft, pixelPos, true);
           }
         }
       }
@@ -278,8 +269,7 @@ class _LatLonPainter extends CustomPainter {
   }
 
   // draw one text label
-  void drawText(Canvas canvas, double degree, int digits, double posx, double posy,
-      bool isLat) {
+  void drawText(Canvas canvas, double degree, int digits, double posx, double posy, bool isLat) {
 
     List<_GridLabel> list = [];
     _GridLabel label = _GridLabel(degree, digits, posx, posy, isLat);
@@ -463,10 +453,10 @@ class _LatLonPainter extends CustomPainter {
     List<double> ret = [];
 
     List<double> lineSpacingDegrees =
-      [45.0, 30.0, 15.0, 9.0, 6.0, 3.0, 2.0, 1.0, 0.5, 0.25,
-        0.1, 0.05, 0.025, 0.0125, 0.00625, 0.003125, 0.0015625, 0.00078125,
-        0.000390625, 0.0001953125, 0.00009765625, 0.000048828125,
-        0.0000244140625];
+    [45.0, 30.0, 15.0, 9.0, 6.0, 3.0, 2.0, 1.0, 0.5, 0.25,
+      0.1, 0.05, 0.025, 0.0125, 0.00625, 0.003125, 0.0015625, 0.00078125,
+      0.000390625, 0.0001953125, 0.00009765625, 0.000048828125,
+      0.0000244140625];
 
     // limit index
     int index = zoom;
