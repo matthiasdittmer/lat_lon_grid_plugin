@@ -1,3 +1,10 @@
+## [0.2.0] - 2021/07/01
+
+* Adding null safety (from PR #7).
+* Replacing latlong with latlong2 package (from PR #7).
+* Upgrading dependencies (from PR #7).
+* Updating example application (removed rotation slider, replaced with reset rotation button).
+
 ## [0.1.3] - 2020/07/14
 
 * Upgrading library dependencies.
