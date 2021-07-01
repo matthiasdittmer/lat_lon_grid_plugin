@@ -37,9 +37,9 @@ class MapPluginLatLonGridOptions extends LayerOptions {
 
   /// MapPluginLatLonGridOptions
   MapPluginLatLonGridOptions({
+    this.lineWidth = 0.5,
     this.lineColor = Colors.black,
     this.textColor = Colors.white,
-    this.lineWidth = 0.5,
     this.textBackgroundColor = Colors.black,
     this.showCardinalDirections = true,
     this.showCardinalDirectionsAsPrefix = false,

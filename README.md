@@ -39,9 +39,10 @@ Please note: Make sure to place the `MapPluginLatLonGridOptions()` right after `
         subdomains: ['a', 'b', 'c'],
       ),
       MapPluginLatLonGridOptions(
-        lineColor: Colors.black,
-        textColor: Colors.white,
         lineWidth: 0.5,
+        // apply alpha for grid lines
+        lineColor: Color.fromARGB(100, 0, 0, 0),
+        textColor: Colors.white,
         textBackgroundColor: Colors.black,
         showCardinalDirections: true,
         showCardinalDirectionsAsPrefix: false,
