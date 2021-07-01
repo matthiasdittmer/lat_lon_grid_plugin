@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:lat_lon_grid_plugin/lat_lon_grid_plugin.dart';
@@ -33,14 +31,10 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   MapController? _mapController;
   String _sLatLonZoom = '';
-  double _rotation = 0.0;
 
-  void _updateRotation(double valRotation) {
-    setState(() {
-      _rotation = valRotation;
-      _updateLabel();
-    });
-    _mapController!.rotate(valRotation);
+  void _resetRotation() {
+    _mapController!.rotate(0);
+    setState(_updateLabel);
   }
 
   void _updateLabel() {
@@ -48,7 +42,7 @@ class _HomePageState extends State<HomePage> {
       String lat = _mapController!.center.latitude.toStringAsFixed(3);
       String lon = _mapController!.center.longitude.toStringAsFixed(3);
       String zoom = _mapController!.zoom.toStringAsFixed(2);
-      String rotation = _rotation.toStringAsFixed(0);
+      String rotation = _mapController!.rotation.toStringAsFixed(2);
 
       // don't trigger rebuild while building aka. when the first build didn't finish yet
       if (_sLatLonZoom == '') {
@@ -136,23 +130,13 @@ class _HomePageState extends State<HomePage> {
                 height: 50.0,
                 width: 200.0,
                 child: Container(
-                  color: Colors.blue,
-                  child: SliderTheme(
-                    data: SliderTheme.of(context).copyWith(
-                      valueIndicatorTextStyle: TextStyle(
-                        color: Colors.black,
-                      ),
+                  color: Colors.white,
+                  child: TextButton(
+                    child: Text(
+                      'Reset Rotation',
+                      style: TextStyle(fontSize: 20.0),
                     ),
-                    child: Slider(
-                      activeColor: Colors.white,
-                      inactiveColor: Colors.grey,
-                      value: _rotation,
-                      min: 0.0,
-                      max: 360.0,
-                      divisions: 360,
-                      onChanged: _updateRotation,
-                      label: _rotation.toStringAsFixed(0),
-                    ),
+                    onPressed: _resetRotation,
                   ),
                 ),
               ),
