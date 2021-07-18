@@ -26,8 +26,9 @@ Please note: Make sure to place the `MapPluginLatLonGridOptions()` right after `
   FlutterMap(
     mapController: _mapController,
     options: MapOptions(
-      center: LatLng(37.7, 13.5),
-      zoom: 7.0,
+      center: LatLng(51.814, -2.170),
+      zoom: 6.15,
+      rotation: 0.0,
       plugins: [
         MapPluginLatLonGrid(),
       ],
