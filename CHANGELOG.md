@@ -1,3 +1,8 @@
+## [0.2.1] - 2021/07/18
+
+* Example code now consistent with screenshot.
+* Correct Flutter format for main package file.
+
 ## [0.2.0] - 2021/07/01
 
 * Adding null safety (from PR #7).
