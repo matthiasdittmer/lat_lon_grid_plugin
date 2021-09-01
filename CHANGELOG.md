@@ -1,3 +1,8 @@
+## [0.2.2] - 2021/09/01
+
+* Updated example code.
+* Updated repository url.
+
 ## [0.2.1] - 2021/07/18
 
 * Example code now consistent with screenshot.
