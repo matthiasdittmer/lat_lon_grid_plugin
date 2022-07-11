@@ -374,7 +374,7 @@ class _LatLonPainter extends CustomPainter {
     }
     // convert degree value to text
     // with defined digits amount after decimal point
-    String sDegree = degree.toStringAsFixed(digits);
+    String sDegree = degree.toStringAsFixed(digits) + '°';
 
     // build text string
     String sText = '';
