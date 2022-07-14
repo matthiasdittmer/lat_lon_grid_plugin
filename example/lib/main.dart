@@ -61,7 +61,7 @@ class _HomePageState extends State<HomePage> {
     _mapController = MapController();
     // hacked together
     // https://stackoverflow.com/questions/49466556/flutter-run-method-on-widget-build-complete
-    WidgetsBinding.instance!.addPostFrameCallback((_) => _updateLabel());
+    WidgetsBinding.instance.addPostFrameCallback((_) => _updateLabel());
   }
 
   @override
@@ -111,16 +111,18 @@ class _HomePageState extends State<HomePage> {
                 lineWidth: 0.5,
                 // apply alpha for grid lines
                 lineColor: Color.fromARGB(100, 0, 0, 0),
-                textColor: Colors.white,
-                textBackgroundColor: Colors.black,
+                labelStyle: TextStyle(
+                  color: Colors.white,
+                  backgroundColor: Colors.black,
+                  fontSize: 12.0,
+                ),
                 showCardinalDirections: true,
                 showCardinalDirectionsAsPrefix: false,
-                textSize: 12.0,
                 showLabels: true,
                 rotateLonLabels: true,
                 placeLabelsOnLines: true,
-                offsetLonTextBottom: 20.0,
-                offsetLatTextLeft: 20.0,
+                offsetLonLabelsBottom: 20.0,
+                offsetLatLabelsLeft: 20.0,
               ),
             ],
           ),
