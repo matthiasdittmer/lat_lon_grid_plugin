@@ -61,7 +61,7 @@ class _HomePageState extends State<HomePage> {
     _mapController = MapController();
     // hacked together
     // https://stackoverflow.com/questions/49466556/flutter-run-method-on-widget-build-complete
-    WidgetsBinding.instance!.addPostFrameCallback((_) => _updateLabel());
+    WidgetsBinding.instance.addPostFrameCallback((_) => _updateLabel());
   }
 
   @override
