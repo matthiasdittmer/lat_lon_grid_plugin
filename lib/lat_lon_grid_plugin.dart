@@ -13,11 +13,8 @@ class MapPluginLatLonGridOptions extends LayerOptions {
   /// can be adjusted even down to 0.1 on high res displays for a light grid
   double lineWidth = 0.5;
 
-  /// color of grid labels
-  Color textColor;
-
-  /// background color of labels
-  Color textBackgroundColor;
+  /// style of labels
+  TextStyle labelStyle;
 
   /// show cardinal directions instead of numbers only
   // prevents negative numbers, e.g. 45.5W instead of -45.5
@@ -25,9 +22,6 @@ class MapPluginLatLonGridOptions extends LayerOptions {
 
   /// show cardinal direction as prefix, e.g. W45.5 instead of 45.5W
   bool showCardinalDirectionsAsPrefix = false;
-
-  /// text size for labels
-  double textSize = 12.0;
 
   /// enable labels
   bool showLabels = true;
@@ -40,25 +34,23 @@ class MapPluginLatLonGridOptions extends LayerOptions {
   bool placeLabelsOnLines = true;
 
   /// offset for longitude labels from the 'bottom' (north up)
-  double offsetLonTextBottom = 50;
+  double offsetLonLabelsBottom = 50;
 
   /// offset for latitude labels from the 'left' (north up)
-  double offsetLatTextLeft = 75;
+  double offsetLatLabelsLeft = 75;
 
   /// MapPluginLatLonGridOptions
   MapPluginLatLonGridOptions({
+    required this.labelStyle,
     this.lineWidth = 0.5,
     this.lineColor = Colors.black,
-    this.textColor = Colors.white,
-    this.textBackgroundColor = Colors.black,
     this.showCardinalDirections = true,
     this.showCardinalDirectionsAsPrefix = false,
-    this.textSize = 12.0,
     this.showLabels = true,
     this.rotateLonLabels = true,
     this.placeLabelsOnLines = true,
-    this.offsetLonTextBottom = 50.0,
-    this.offsetLatTextLeft = 75.0,
+    this.offsetLonLabelsBottom = 50.0,
+    this.offsetLatLabelsLeft = 75.0,
   });
 
   /// overscan ensures that labels are visible even if line is not already
@@ -195,11 +187,11 @@ class _LatLonPainter extends CustomPainter {
           if (options._groupedLabelCalls) {
             // add to list
             lonGridLabels.add(_GridLabel(lonPos[i], inc[1].toInt(), pixelPos,
-                h - options.offsetLonTextBottom - textPainterH, false));
+                h - options.offsetLonLabelsBottom - textPainterH, false));
           } else {
             // draw labels
             drawText(canvas, lonPos[i], inc[1].toInt(), pixelPos,
-                h - options.offsetLonTextBottom - textPainterH, false);
+                h - options.offsetLonLabelsBottom - textPainterH, false);
           }
         }
       }
@@ -229,11 +221,11 @@ class _LatLonPainter extends CustomPainter {
           if (options._groupedLabelCalls) {
             // add to list
             latGridLabels.add(_GridLabel(latPos[i], inc[1].toInt(),
-                options.offsetLatTextLeft, pixelPos, true));
+                options.offsetLatLabelsLeft, pixelPos, true));
           } else {
             // draw labels
             drawText(canvas, latPos[i], inc[1].toInt(),
-                options.offsetLatTextLeft, pixelPos, true);
+                options.offsetLatLabelsLeft, pixelPos, true);
           }
         }
       }
@@ -373,7 +365,7 @@ class _LatLonPainter extends CustomPainter {
     }
     // convert degree value to text
     // with defined digits amount after decimal point
-    String sDegree = degree.toStringAsFixed(digits);
+    String sDegree = '${degree.toStringAsFixed(digits)}°';
 
     // build text string
     String sText = '';
@@ -398,11 +390,7 @@ class _LatLonPainter extends CustomPainter {
 
   TextPainter getTextPaint(String text) {
     // setup all text painter objects
-    TextStyle textStyle = TextStyle(
-        backgroundColor: options.textBackgroundColor,
-        color: options.textColor,
-        fontSize: options.textSize);
-    TextSpan textSpan = TextSpan(style: textStyle, text: text);
+    TextSpan textSpan = TextSpan(style: options.labelStyle, text: text);
     return TextPainter(text: textSpan, textDirection: TextDirection.ltr)
       ..layout();
   }
