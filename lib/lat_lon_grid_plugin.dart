@@ -381,7 +381,7 @@ class _LatLonPainter extends CustomPainter {
         }
       } else {
         // no leading minus sign before zero
-        sText = '0';
+        sText = '0°';
       }
     }
 
