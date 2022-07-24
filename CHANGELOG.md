@@ -1,6 +1,6 @@
 ## [0.2.3] - 2022/07/22
 
-* Changed text styling interface. Now using TextStyle. (form #PR 11).
+* Changed text styling interface. Now using TextStyle. (from #PR 11).
 * Added a degree symbol (from #PR 11).
 * Updated plugin to work with current flutter_map version (from #PR 10).
 * Minimal flutter_map version for plugin is now 1.0.0.
