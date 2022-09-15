@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/plugin_api.dart';
 import 'package:latlong2/latlong.dart';
 
-/// MapPluginLatLonGridOptions
-class MapPluginLatLonGridOptions extends LayerOptions {
+/// LatLonGridLayerOptions
+class LatLonGridLayerOptions {
   /// color of grid lines
   Color lineColor;
 
@@ -39,8 +39,8 @@ class MapPluginLatLonGridOptions extends LayerOptions {
   /// offset for latitude labels from the 'left' (north up)
   double offsetLatLabelsLeft = 75;
 
-  /// MapPluginLatLonGridOptions
-  MapPluginLatLonGridOptions({
+  /// LatLonGridLayerOptions
+  LatLonGridLayerOptions({
     required this.labelStyle,
     this.lineWidth = 0.5,
     this.lineColor = Colors.black,
@@ -73,34 +73,25 @@ class MapPluginLatLonGridOptions extends LayerOptions {
   final bool _groupedLabelCalls = true;
 }
 
-/// MapPluginLatLonGrid
-class MapPluginLatLonGrid implements MapPlugin {
-  /// MapPluginLatLonGridOptions
-  final MapPluginLatLonGridOptions? options;
+/// LatLonGridLayer
+class LatLonGridLayer extends StatelessWidget {
+  /// LatLonGridLayerOptions
+  final LatLonGridLayerOptions options;
 
   /// Plugin options
-  MapPluginLatLonGrid({this.options});
+  LatLonGridLayer({super.key, required this.options});
 
   @override
-  Widget createLayer(
-      LayerOptions options, MapState mapState, Stream<void> stream) {
-    if (options is MapPluginLatLonGridOptions) {
-      return Center(
-        child: CustomPaint(
-          // the child empty Container ensures that CustomPainter gets a size
-          // (not w=0 and h=0)
-          child: Container(),
-          painter: _LatLonPainter(options: options, mapState: mapState),
-        ),
-      );
-    }
-
-    throw Exception('Unknown options type for MyCustom plugin: $options');
-  }
-
-  @override
-  bool supportsLayer(LayerOptions options) {
-    return options is MapPluginLatLonGridOptions;
+  Widget build(BuildContext context) {
+    final mapState = FlutterMapState.maybeOf(context)!;
+    return Center(
+      child: CustomPaint(
+        // the child empty Container ensures that CustomPainter gets a size
+        // (not w=0 and h=0)
+        child: Container(),
+        painter: _LatLonPainter(options: options, mapState: mapState),
+      ),
+    );
   }
 }
 
@@ -120,8 +111,8 @@ class _GridLabel {
 class _LatLonPainter extends CustomPainter {
   double w = 0.0;
   double h = 0.0;
-  MapPluginLatLonGridOptions options;
-  MapState mapState;
+  final LatLonGridLayerOptions options;
+  final FlutterMapState mapState;
   final Paint mPaint = Paint();
 
   // list of grid labels for latitude and longitude
@@ -159,7 +150,7 @@ class _LatLonPainter extends CustomPainter {
     TextPainter textPainterMax = getTextPaint('180W');
     // maximal width for this label text
     double textPainterMaxW = textPainterMax.width;
-    // height is equal for all unrotated labels
+    // height is equal for all not rotated labels
     double textPainterH = textPainterMax.height;
 
     // draw north-south lines
@@ -247,7 +238,7 @@ class _LatLonPainter extends CustomPainter {
   // search the console for the final results printed after sample count is collected
   void addTimeForProfiling(int time) {
     // do add / calc logic
-    if (options._profilingValCount < MapPluginLatLonGridOptions._samples) {
+    if (options._profilingValCount < LatLonGridLayerOptions._samples) {
       // add time
       options._profilingVals[options._profilingValCount] = time;
       options._profilingValCount++;
@@ -256,11 +247,11 @@ class _LatLonPainter extends CustomPainter {
       // use "effective integer division" as suggested from IDE
       options._profilingVals.sort();
       int median = options
-          ._profilingVals[(MapPluginLatLonGridOptions._samples - 1) ~/ 2];
+          ._profilingVals[(LatLonGridLayerOptions._samples - 1) ~/ 2];
 
       // print median once to console
       print(
-          'median of draw() is $median us (out of ${MapPluginLatLonGridOptions._samples} samples)');
+          'median of draw() is $median us (out of ${LatLonGridLayerOptions._samples} samples)');
       // reset counter
       options._profilingValCount = 0;
     }
