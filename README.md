@@ -8,7 +8,7 @@ Adds a latitude / longitude grid as plugin to the [flutter_map](https://github.c
 
 Example application under `/example/`:
 
-![Example](lat_lon_grid_plugin_example.png)
+<img src="lat_lon_grid_plugin_example.png" alt="screenshot" height="1000"/>
 
 # Usage
 
@@ -20,8 +20,6 @@ dependencies:
 
 Include the `FlutterMap` into your widget tree.
 
-Please note: Make sure to place the `MapPluginLatLonGridOptions()` right after `TileLayerOptions()` so it does not consume touch events from other layer widgets.
-
 ```dart
   FlutterMap(
     mapController: _mapController,
@@ -29,32 +27,31 @@ Please note: Make sure to place the `MapPluginLatLonGridOptions()` right after `
       center: LatLng(51.814, -2.170),
       zoom: 6.15,
       rotation: 0.0,
-      plugins: [
-        MapPluginLatLonGrid(),
-      ],
     ),
-    layers: [
-      TileLayerOptions(
+    children: [
+      TileLayer(
         urlTemplate:
             'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
         subdomains: ['a', 'b', 'c'],
       ),
-      MapPluginLatLonGridOptions(
-        lineWidth: 0.5,
-        // apply alpha for grid lines
-        lineColor: Color.fromARGB(100, 0, 0, 0),
-        labelStyle: TextStyle(
-          color: Colors.white,
-          backgroundColor: Colors.black,
-          fontSize: 12.0,
+      LatLonGridLayer(
+        options: LatLonGridLayerOptions(
+          lineWidth: 0.5,
+          // apply alpha for grid lines
+          lineColor: Color.fromARGB(100, 0, 0, 0),
+          labelStyle: TextStyle(
+            color: Colors.white,
+            backgroundColor: Colors.black,
+            fontSize: 12.0,
+          ),
+          showCardinalDirections: true,
+          showCardinalDirectionsAsPrefix: false,
+          showLabels: true,
+          rotateLonLabels: true,
+          placeLabelsOnLines: true,
+          offsetLonLabelsBottom: 20.0,
+          offsetLatLabelsLeft: 20.0,
         ),
-        showCardinalDirections: true,
-        showCardinalDirectionsAsPrefix: false,
-        showLabels: true,
-        rotateLonLabels: true,
-        placeLabelsOnLines: true,
-        offsetLonLabelsBottom: 20.0,
-        offsetLatLabelsLeft: 20.0,
       ),
     ],
   ),
