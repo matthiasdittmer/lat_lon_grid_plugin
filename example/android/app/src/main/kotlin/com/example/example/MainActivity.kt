@@ -1,4 +1,4 @@
-package com.example.example
+package com.lat_long_grid_plugin.example
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity

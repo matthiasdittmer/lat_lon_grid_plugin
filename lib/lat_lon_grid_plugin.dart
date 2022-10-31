@@ -4,43 +4,43 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/plugin_api.dart';
 import 'package:latlong2/latlong.dart';
 
-/// MapPluginLatLonGridOptions
-class MapPluginLatLonGridOptions extends LayerOptions {
+/// LatLonGridLayerOptions
+class LatLonGridLayerOptions {
   /// color of grid lines
-  Color lineColor;
+  final Color lineColor;
 
   /// width of grid lines
   /// can be adjusted even down to 0.1 on high res displays for a light grid
-  double lineWidth = 0.5;
+  final double lineWidth;
 
   /// style of labels
-  TextStyle labelStyle;
+  final TextStyle labelStyle;
 
   /// show cardinal directions instead of numbers only
   // prevents negative numbers, e.g. 45.5W instead of -45.5
-  bool showCardinalDirections = false;
+  final bool showCardinalDirections;
 
   /// show cardinal direction as prefix, e.g. W45.5 instead of 45.5W
-  bool showCardinalDirectionsAsPrefix = false;
+  final bool showCardinalDirectionsAsPrefix;
 
   /// enable labels
-  bool showLabels = true;
+  final bool showLabels;
 
   /// rotate longitude labels 90 degrees
   /// mainly to prevent overlapping on high zoom levels
-  bool rotateLonLabels = true;
+  final bool rotateLonLabels;
 
   /// center labels on lines instead of top edge alignment
-  bool placeLabelsOnLines = true;
+  final bool placeLabelsOnLines;
 
   /// offset for longitude labels from the 'bottom' (north up)
-  double offsetLonLabelsBottom = 50;
+  final double offsetLonLabelsBottom;
 
   /// offset for latitude labels from the 'left' (north up)
-  double offsetLatLabelsLeft = 75;
+  final double offsetLatLabelsLeft;
 
-  /// MapPluginLatLonGridOptions
-  MapPluginLatLonGridOptions({
+  /// LatLonGridLayerOptions
+  LatLonGridLayerOptions({
     required this.labelStyle,
     this.lineWidth = 0.5,
     this.lineColor = Colors.black,
@@ -73,34 +73,25 @@ class MapPluginLatLonGridOptions extends LayerOptions {
   final bool _groupedLabelCalls = true;
 }
 
-/// MapPluginLatLonGrid
-class MapPluginLatLonGrid implements MapPlugin {
-  /// MapPluginLatLonGridOptions
-  final MapPluginLatLonGridOptions? options;
+/// LatLonGridLayer
+class LatLonGridLayer extends StatelessWidget {
+  /// LatLonGridLayerOptions
+  final LatLonGridLayerOptions options;
 
   /// Plugin options
-  MapPluginLatLonGrid({this.options});
+  LatLonGridLayer({super.key, required this.options});
 
   @override
-  Widget createLayer(
-      LayerOptions options, MapState mapState, Stream<void> stream) {
-    if (options is MapPluginLatLonGridOptions) {
-      return Center(
-        child: CustomPaint(
-          // the child empty Container ensures that CustomPainter gets a size
-          // (not w=0 and h=0)
-          child: Container(),
-          painter: _LatLonPainter(options: options, mapState: mapState),
-        ),
-      );
-    }
-
-    throw Exception('Unknown options type for MyCustom plugin: $options');
-  }
-
-  @override
-  bool supportsLayer(LayerOptions options) {
-    return options is MapPluginLatLonGridOptions;
+  Widget build(BuildContext context) {
+    final mapState = FlutterMapState.maybeOf(context)!;
+    return Center(
+      child: CustomPaint(
+        // the child SizedBox.expand() ensures that CustomPainter gets a size
+        // (not w=0 and h=0)
+        child: SizedBox.expand(),
+        painter: _LatLonPainter(options: options, mapState: mapState),
+      ),
+    );
   }
 }
 
@@ -120,13 +111,13 @@ class _GridLabel {
 class _LatLonPainter extends CustomPainter {
   double w = 0.0;
   double h = 0.0;
-  MapPluginLatLonGridOptions options;
-  MapState mapState;
+  final LatLonGridLayerOptions options;
+  final FlutterMapState mapState;
   final Paint mPaint = Paint();
 
   // list of grid labels for latitude and longitude
-  List<_GridLabel> lonGridLabels = [];
-  List<_GridLabel> latGridLabels = [];
+  final List<_GridLabel> lonGridLabels = [];
+  final List<_GridLabel> latGridLabels = [];
 
   _LatLonPainter({required this.options, required this.mapState}) {
     mPaint.color = options.lineColor;
@@ -143,38 +134,38 @@ class _LatLonPainter extends CustomPainter {
     w = size.width;
     h = size.height;
 
-    List<double> inc = getIncrementor(mapState.zoom.round());
+    final List<double> inc = getIncrementor(mapState.zoom.round());
 
     // store bounds
     // mapState.bounds cannot actually be null
-    double north = mapState.bounds.north;
-    double west = mapState.bounds.west;
-    double south = mapState.bounds.south;
-    double east = mapState.bounds.east;
+    final north = mapState.bounds.north;
+    final west = mapState.bounds.west;
+    final south = mapState.bounds.south;
+    final east = mapState.bounds.east;
 
-    Bounds b = mapState.getPixelBounds(mapState.zoom);
-    CustomPoint topLeftPixel = b.topLeft;
+    final bounds = mapState.getPixelBounds(mapState.zoom);
+    final CustomPoint topLeftPixel = bounds.topLeft;
 
     // getting the dimensions for a maximal sized text label
-    TextPainter textPainterMax = getTextPaint('180W');
+    final TextPainter textPainterMax = getTextPaint('180W');
     // maximal width for this label text
-    double textPainterMaxW = textPainterMax.width;
-    // height is equal for all unrotated labels
-    double textPainterH = textPainterMax.height;
+    final double textPainterMaxW = textPainterMax.width;
+    // height is equal for all not rotated labels
+    final double textPainterH = textPainterMax.height;
 
     // draw north-south lines
-    List<double> lonPos = generatePositions(
+    final List<double> lonPos = generatePositions(
         west, east, inc[0], options._enableOverscan, -180.0, 180.0);
     lonGridLabels.clear();
     for (int i = 0; i < lonPos.length; i++) {
       // convert point to pixels
-      CustomPoint projected =
+      final CustomPoint projected =
           mapState.project(LatLng(north, lonPos[i]), mapState.zoom);
-      double pixelPos = projected.x - (topLeftPixel.x as double);
+      final double pixelPos = projected.x - (topLeftPixel.x as double);
 
       // draw line
-      Offset pTopNorth = Offset(pixelPos, 0.0);
-      Offset pBottomSouth = Offset(pixelPos, h);
+      final pTopNorth = Offset(pixelPos, 0.0);
+      final pBottomSouth = Offset(pixelPos, h);
       // only draw visible lines, using one complete line width as buffer
       if (pixelPos + options.lineWidth >= 0.0 &&
           pixelPos - options.lineWidth <= w) {
@@ -198,18 +189,18 @@ class _LatLonPainter extends CustomPainter {
     }
 
     // draw west-east lines
-    List<double> latPos = generatePositions(
+    final List<double> latPos = generatePositions(
         south, north, inc[0], options._enableOverscan, -90.0, 90.0);
     latGridLabels.clear();
     for (int i = 0; i < latPos.length; i++) {
       // convert back to pixels
-      CustomPoint projected =
+      final CustomPoint projected =
           mapState.project(LatLng(latPos[i], east), mapState.zoom);
-      double pixelPos = projected.y - (topLeftPixel.y as double);
+      final double pixelPos = projected.y - (topLeftPixel.y as double);
 
       // draw line
-      Offset pLeftWest = Offset(0.0, pixelPos);
-      Offset pRightEast = Offset(w, pixelPos);
+      final pLeftWest = Offset(0.0, pixelPos);
+      final pRightEast = Offset(w, pixelPos);
       // only draw visible lines, using one complete line width as buffer
       if (pixelPos + options.lineWidth >= 0.0 &&
           pixelPos - options.lineWidth <= h) {
@@ -247,7 +238,7 @@ class _LatLonPainter extends CustomPainter {
   // search the console for the final results printed after sample count is collected
   void addTimeForProfiling(int time) {
     // do add / calc logic
-    if (options._profilingValCount < MapPluginLatLonGridOptions._samples) {
+    if (options._profilingValCount < LatLonGridLayerOptions._samples) {
       // add time
       options._profilingVals[options._profilingValCount] = time;
       options._profilingValCount++;
@@ -255,12 +246,12 @@ class _LatLonPainter extends CustomPainter {
       // calc median here, not using mean here
       // use "effective integer division" as suggested from IDE
       options._profilingVals.sort();
-      int median = options
-          ._profilingVals[(MapPluginLatLonGridOptions._samples - 1) ~/ 2];
+      final int median = options
+          ._profilingVals[(LatLonGridLayerOptions._samples - 1) ~/ 2];
 
       // print median once to console
       print(
-          'median of draw() is $median us (out of ${MapPluginLatLonGridOptions._samples} samples)');
+          'median of draw() is $median us (out of ${LatLonGridLayerOptions._samples} samples)');
       // reset counter
       options._profilingValCount = 0;
     }
@@ -271,7 +262,7 @@ class _LatLonPainter extends CustomPainter {
   void drawLabels(Canvas canvas, List<_GridLabel> list) {
     // process items to generate text painter
     for (int i = 0; i < list.length; i++) {
-      String sText = getText(list[i].degree, list[i].digits, list[i].isLat);
+      final sText = getText(list[i].degree, list[i].digits, list[i].isLat);
       list[i].textPainter = getTextPaint(sText);
     }
 
@@ -282,11 +273,11 @@ class _LatLonPainter extends CustomPainter {
   // draw one text label
   void drawText(Canvas canvas, double degree, int digits, double posx,
       double posy, bool isLat) {
-    List<_GridLabel> list = [];
-    _GridLabel label = _GridLabel(degree, digits, posx, posy, isLat);
+    final list = <_GridLabel>[];
+    final label = _GridLabel(degree, digits, posx, posy, isLat);
 
     // generate textPainter object from input data
-    String sText = getText(degree, digits, isLat);
+    final sText = getText(degree, digits, isLat);
     label.textPainter = getTextPaint(sText);
 
     // do the actual draw call, pass a list with one item
@@ -310,7 +301,7 @@ class _LatLonPainter extends CustomPainter {
       // loop for draw calls
       for (int i = 0; i < list.length; i++) {
         // calc compensated position and draw
-        double xCompensated = -list[i].posy - list[i].textPainter.height;
+        final double xCompensated = -list[i].posy - list[i].textPainter.height;
         double yCompensated = list[i].posx;
         if (options.placeLabelsOnLines) {
           // apply additional offset
@@ -325,10 +316,12 @@ class _LatLonPainter extends CustomPainter {
       // loop for draw calls
       for (int i = 0; i < list.length; i++) {
         // calc offset to place labels on lines
-        double offsetX =
-            options.placeLabelsOnLines ? list[i].textPainter.width / 2 : 0.0;
-        double offsetY =
-            options.placeLabelsOnLines ? list[i].textPainter.height / 2 : 0.0;
+        double offsetX = options.placeLabelsOnLines
+            ? list[i].textPainter.width / 2
+            : 0.0;
+        double offsetY = options.placeLabelsOnLines
+            ? list[i].textPainter.height / 2
+            : 0.0;
 
         // reset unwanted offset depending on lat or lon
         list[i].isLat ? offsetX = 0.0 : offsetY = 0.0;
@@ -365,7 +358,7 @@ class _LatLonPainter extends CustomPainter {
     }
     // convert degree value to text
     // with defined digits amount after decimal point
-    String sDegree = '${degree.toStringAsFixed(digits)}°';
+    final sDegree = '${degree.toStringAsFixed(digits)}°';
 
     // build text string
     String sText = '';
@@ -390,7 +383,7 @@ class _LatLonPainter extends CustomPainter {
 
   TextPainter getTextPaint(String text) {
     // setup all text painter objects
-    TextSpan textSpan = TextSpan(style: options.labelStyle, text: text);
+    final textSpan = TextSpan(style: options.labelStyle, text: text);
     return TextPainter(text: textSpan, textDirection: TextDirection.ltr)
       ..layout();
   }
@@ -403,7 +396,7 @@ class _LatLonPainter extends CustomPainter {
   // Generate a list of doubles between start and end with spacing inc
   List<double> generatePositions(double start, double end, double inc,
       bool extendedRange, double lowerBound, double upperBound) {
-    List<double> list = [];
+    final list = <double>[];
 
     // find first value
     double currentPos = roundUp(start, inc);
@@ -414,15 +407,14 @@ class _LatLonPainter extends CustomPainter {
     assert(inc > 1E-5);
     assert(start < end);
     // calc upper limit for iterations
-    double upperLimit = (end - start) / inc;
+    final double upperLimit = (end - start) / inc;
     int counter = 0;
 
-    bool run = true;
-    while (run && counter <= upperLimit.ceil()) {
+    while (counter <= upperLimit.ceil()) {
       currentPos += inc;
       list.add(currentPos);
       if (currentPos >= end) {
-        run = false;
+        break;
       }
       counter++;
     }
@@ -446,10 +438,10 @@ class _LatLonPainter extends CustomPainter {
   // Taken from here: https://stackoverflow.com/questions/3407012/c-rounding-up-to-the-nearest-multiple-of-a-number
   double roundUp(double number, double fixedBase) {
     if (fixedBase != 0 && number != 0) {
-      double sign = number > 0 ? 1 : -1;
+      final double sign = number > 0 ? 1 : -1;
       number *= sign;
       number /= fixedBase;
-      int fixedPoint = number.ceil().toInt();
+      final int fixedPoint = number.ceil().toInt();
       number = fixedPoint * fixedBase;
       number *= sign;
     }
@@ -458,9 +450,9 @@ class _LatLonPainter extends CustomPainter {
 
   // Proven values taken from osmdroid LatLon function
   List<double> getIncrementor(int zoom) {
-    List<double> ret = [];
+    final ret = <double>[];
 
-    List<double> lineSpacingDegrees = [
+    const lineSpacingDegrees = <double>[
       45.0,
       30.0,
       15.0,
@@ -490,8 +482,7 @@ class _LatLonPainter extends CustomPainter {
     int index = zoom;
     if (zoom <= 0) {
       index = 0;
-    }
-    if (zoom > lineSpacingDegrees.length - 1) {
+    } else if (zoom > lineSpacingDegrees.length - 1) {
       index = lineSpacingDegrees.length - 1;
     }
     // pick the right spacing

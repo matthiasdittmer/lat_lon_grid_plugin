@@ -97,32 +97,31 @@ class _HomePageState extends State<HomePage> {
               zoom: 6.15,
               rotation: 0.0,
               onPositionChanged: (position, hasGesture) => _updateLabel(),
-              plugins: [
-                MapPluginLatLonGrid(),
-              ],
             ),
-            layers: [
-              TileLayerOptions(
+            children: [
+              TileLayer(
                 urlTemplate:
                     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
                 subdomains: ['a', 'b', 'c'],
               ),
-              MapPluginLatLonGridOptions(
-                lineWidth: 0.5,
-                // apply alpha for grid lines
-                lineColor: Color.fromARGB(100, 0, 0, 0),
-                labelStyle: TextStyle(
-                  color: Colors.white,
-                  backgroundColor: Colors.black,
-                  fontSize: 12.0,
+              LatLonGridLayer(
+                options: LatLonGridLayerOptions(
+                  lineWidth: 0.5,
+                  // apply alpha for grid lines
+                  lineColor: Color.fromARGB(100, 0, 0, 0),
+                  labelStyle: TextStyle(
+                    color: Colors.white,
+                    backgroundColor: Colors.black,
+                    fontSize: 12.0,
+                  ),
+                  showCardinalDirections: true,
+                  showCardinalDirectionsAsPrefix: false,
+                  showLabels: true,
+                  rotateLonLabels: true,
+                  placeLabelsOnLines: true,
+                  offsetLonLabelsBottom: 20.0,
+                  offsetLatLabelsLeft: 20.0,
                 ),
-                showCardinalDirections: true,
-                showCardinalDirectionsAsPrefix: false,
-                showLabels: true,
-                rotateLonLabels: true,
-                placeLabelsOnLines: true,
-                offsetLonLabelsBottom: 20.0,
-                offsetLatLabelsLeft: 20.0,
               ),
             ],
           ),
