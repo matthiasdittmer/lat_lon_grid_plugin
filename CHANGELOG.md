@@ -1,8 +1,15 @@
+## [0.2.4] - 2022/10/31
+
+* Multiple changes included for compatibility with flutter_map release of version 3.0.0 and above (all from PR #12).
+* Upgraded versions of gradle and Dart SDK (from PR #12).
+* Updates to example app name and id (from PR #12).
+* Updated README (from PR #12).
+
 ## [0.2.3] - 2022/07/22
 
-* Changed text styling interface. Now using TextStyle. (from #PR 11).
-* Added a degree symbol (from #PR 11).
-* Updated plugin to work with current flutter_map version (from #PR 10).
+* Changed text styling interface. Now using TextStyle. (from PR #11).
+* Added a degree symbol (from PR #11).
+* Updated plugin to work with current flutter_map version (from PR #10).
 * Minimal flutter_map version for plugin is now 1.0.0.
 * Updated example code.
 
