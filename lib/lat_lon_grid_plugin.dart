@@ -288,7 +288,9 @@ class _LatLonPainter extends CustomPainter {
   // can be used for a single item or list of items.
   void canvasCall(Canvas canvas, List<_GridLabel> list) {
     // check for at least on entry
-    assert(list.length > 0);
+    if (list.length == 0) {
+      return;
+    }
 
     // check for longitude and enabled rotation
     if (!list[0].isLat && options.rotateLonLabels) {
