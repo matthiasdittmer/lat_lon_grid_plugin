@@ -246,8 +246,8 @@ class _LatLonPainter extends CustomPainter {
       // calc median here, not using mean here
       // use "effective integer division" as suggested from IDE
       options._profilingVals.sort();
-      final int median = options
-          ._profilingVals[(LatLonGridLayerOptions._samples - 1) ~/ 2];
+      final int median =
+          options._profilingVals[(LatLonGridLayerOptions._samples - 1) ~/ 2];
 
       // print median once to console
       print(
@@ -287,7 +287,7 @@ class _LatLonPainter extends CustomPainter {
 
   // can be used for a single item or list of items.
   void canvasCall(Canvas canvas, List<_GridLabel> list) {
-    // check for at least on entry
+    // return if list is empty, otherwise proceed
     if (list.length == 0) {
       return;
     }
@@ -318,12 +318,10 @@ class _LatLonPainter extends CustomPainter {
       // loop for draw calls
       for (int i = 0; i < list.length; i++) {
         // calc offset to place labels on lines
-        double offsetX = options.placeLabelsOnLines
-            ? list[i].textPainter.width / 2
-            : 0.0;
-        double offsetY = options.placeLabelsOnLines
-            ? list[i].textPainter.height / 2
-            : 0.0;
+        double offsetX =
+            options.placeLabelsOnLines ? list[i].textPainter.width / 2 : 0.0;
+        double offsetY =
+            options.placeLabelsOnLines ? list[i].textPainter.height / 2 : 0.0;
 
         // reset unwanted offset depending on lat or lon
         list[i].isLat ? offsetX = 0.0 : offsetY = 0.0;
