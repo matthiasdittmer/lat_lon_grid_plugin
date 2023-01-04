@@ -8,7 +8,7 @@ Adds a latitude / longitude grid as plugin to the [flutter_map](https://github.c
 
 Example application under `/example/`:
 
-<img src="lat_lon_grid_plugin_example.png" alt="screenshot" height="1000"/>
+<img src="./lat_lon_grid_plugin_example.png" alt="screenshot" height="1000"/>
 
 # Usage
 

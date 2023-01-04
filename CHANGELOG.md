@@ -1,3 +1,8 @@
+## [0.2.5] - 2022/01/04
+
+* Updated list length check logic (from PR #13).
+* Run flutter format over main lib file.
+
 ## [0.2.4] - 2022/10/31
 
 * Multiple changes included for compatibility with flutter_map release of version 3.0.0 and above (all from PR #12).
