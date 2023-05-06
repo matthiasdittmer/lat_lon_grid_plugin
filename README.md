@@ -4,6 +4,10 @@
 
 Adds a latitude / longitude grid as plugin to the [flutter_map](https://github.com/johnpryan/flutter_map/).
 
+Supported [flutter_map versions](https://github.com/fleaflet/flutter_map/releases):
+* Supports flutter_map version 3.0.0 (tested in October 2022).
+* Supports flutter_map versions 3.1.0 and 4.0.0 (tested in May 2023).
+
 # Getting Started
 
 Example application under `/example/`:
