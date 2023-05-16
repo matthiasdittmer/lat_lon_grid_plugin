@@ -113,7 +113,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "0.2.5"
+    version: "0.2.6"
   latlong2:
     dependency: transitive
     description:

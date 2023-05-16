@@ -1,3 +1,8 @@
+## [0.2.6] - 2023/05/16
+
+* Updated versions of tools and libraries used. Cleanup of LINTer parameters (from PR #14).
+* Updated README text to explicitly mention supported flutter versions.
+
 ## [0.2.5] - 2022/01/04
 
 * Updated list length check logic (from PR #13).
