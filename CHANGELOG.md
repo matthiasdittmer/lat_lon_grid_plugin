@@ -3,7 +3,7 @@
 * Updated versions of tools and libraries used. Cleanup of LINTer parameters (from PR #14).
 * Updated README text to explicitly mention supported flutter versions.
 
-## [0.2.5] - 2022/01/04
+## [0.2.5] - 2023/01/04
 
 * Updated list length check logic (from PR #13).
 * Run flutter format over main lib file.
