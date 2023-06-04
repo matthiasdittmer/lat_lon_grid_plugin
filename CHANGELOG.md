@@ -1,3 +1,7 @@
+## [0.2.7] - 2023/06/04
+
+* Updated versions libraries used to also support version 5.0.0 of flutter_map.
+
 ## [0.2.6] - 2023/05/16
 
 * Updated versions of tools and libraries used. Cleanup of LINTer parameters (from PR #14).

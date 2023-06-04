@@ -1,11 +1,11 @@
 name: lat_lon_grid_plugin
 description: Adds a latitude / longitude grid as plugin to the [flutter_map](https://github.com/fleaflet/flutter_map/).
-version: 0.2.6
+version: 0.2.7
 homepage: https://github.com/matthiasdittmer/
 repository: https://github.com/matthiasdittmer/lat_lon_grid_plugin
 
 environment:
-  sdk: '>=2.17.0 <3.0.0'
+  sdk: '>=3.0.0 <4.0.0'
   flutter: '>=2.0.0'
 
 dependencies:
