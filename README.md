@@ -9,6 +9,14 @@ Supported [flutter_map versions](https://github.com/fleaflet/flutter_map/release
 * Supports flutter_map versions 3.1.0 and 4.0.0 (tested in May 2023).
 * Supports flutter_map version 5.0.0 (tested in June 2023).
 
+Notes for new flutter_map 6.0.0 release:
+* Does **not** support flutter_map version 6.0.0 yet (tested in October 2023). 
+* Migration of plugin to flutter_map 6.0.0 include breaking changes which makes the plugin incompatible with all previous flutter_map versions.
+* Minimal required flutter_map version will move up to 6.0.0.
+* Migration work and testing will be done on a separate branch for now.
+* Migration work does include major changes concerning the rotation logic. 
+* With 6.0.0 the rotation logic is broken. The lines and label do not rotate.
+
 # Getting Started
 
 Example application under `/example/`:
